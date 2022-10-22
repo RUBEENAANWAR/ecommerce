@@ -3,6 +3,18 @@ const express=require('express');
 const router=express.Router();
 const productHelper=require('../helpers/product-helpers')
 const userHelpers=require('../helpers/user-helpers')
+const bodyParser=require('body-parser')
+const {check,validationResult}=require('express-validator')
+const urlencodedParser=bodyParser.urlencoded({extended:false})
+const verifyLogin=(req,res,next)=>{
+  if(req.session.loggedIn){
+    next()
+  }else{
+    res.redirect('/login')
+  }
+}
+
+
 //get home page
 router.get('/',(req,res,next)=>{
   let user=req.session.user
@@ -29,7 +41,12 @@ router.get('/signup',(req,res)=>{
 router.post('/signup',(req,res)=>{
   userHelpers.doSignup(req.body).then((response)=>{
     console.log(response)
+    res.redirect('/login')
   })
+})
+router.post('/signup',urlencodedParser,(req,res)=>{
+  res.json(req.body)
+res.redirect('/login')
 })
 router.post('/login',(req,res)=>{
   userHelpers.doLogin(req.body).then((response)=>{
@@ -38,7 +55,7 @@ router.post('/login',(req,res)=>{
       req.session.user=response.user
       res.redirect('/')
     }else{
-      req.session.loginErr=true
+      req.session.loginErr="Invalid username or password"
       res.redirect('/login')
     }
   })
@@ -48,4 +65,8 @@ router.get('/logout',(req,res)=>{
   req.session.destroy()
   res.redirect('/')
 })
+router.get('/cart',verifyLogin,(req,res)=>{
+  res.render('user/cart')
+})
+
 module.exports=router;
