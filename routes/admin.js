@@ -16,7 +16,6 @@ router.get("/add-product",(req,res)=>{
     res.render('admin/add-product')
 })
 router.post('/add-product',(req,res)=>{
-  
     productHelpers.addProduct(req.body,(id)=>{
         let image=req.files.Image
         console.log(id)
@@ -56,4 +55,18 @@ router.post('/edit-product/:id',(req,res)=>{
         }
     })    
 })
+
+// router.get('/view-users',(req,res)=>{
+//         let adminData=req.session.admin;
+//         if(!adminData){
+//             res.render('admin/login',{admin:true})
+//         }
+//         userControlHelper.getAllUser().then((users)=>{
+//             console.log(users)
+//             res.render('admin/view-users',{admin:true,users,adminData})
+//         })
+//     }) 
+
+
+
 module.exports=router;
