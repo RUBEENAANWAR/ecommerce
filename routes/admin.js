@@ -3,6 +3,9 @@ const express=require('express')
 // const productHelpers = require('../helpers/product-helpers')
 const router=express.Router()
 const productHelpers=require('../helpers/product-helpers')
+const bodyParser=require('body-parser')
+const {check,validationResult}=require('express-validator')
+const urlencodedParser=bodyParser.urlencoded({extended:false})
 
 router.get('/',(req,res,next)=>{
     productHelpers.getAllProducts().then((products)=>{
@@ -11,6 +14,7 @@ router.get('/',(req,res,next)=>{
 
     })
 })
+
 
 router.get("/add-product",(req,res)=>{
     res.render('admin/add-product')
