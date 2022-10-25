@@ -56,7 +56,7 @@ userHelpers.doLogin(req.body).then((response)=>{
     req.session.user=response.user
     res.redirect('/')
   }else{
-    req.session.loginErr="invalid credentials"
+    req.session.loginErr="invalid username or password"
     res.redirect("/login")
   }
 })
