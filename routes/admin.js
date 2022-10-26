@@ -7,21 +7,20 @@ const bodyParser=require('body-parser')
 const adminHelpers=require('../helpers/admin-helpers')
 const {check,validationResult}=require('express-validator')
 const urlencodedParser=bodyParser.urlencoded({extended:false})
-// const verifyAdminLogin=(req,res,next)=>{
-//     if(req.session.loggedIn){
-//       next()
-//     }
-//     else{
-//       res.redirect('/adminLogin')
-//     }
+const verifyAdminLogin=(req,res,next)=>{
+    if(req.session.admin.loggedIn){
+      next()
+    }
+    else{
+      res.redirect('/login')
+    }
   
-//   }
-
+  }
 
 router.get('/',(req,res,next)=>{
     let adminData=req.session.admin;
     if(!adminData){
-        res.render('admin/adminLogin',{admin:true})
+        res.render('admin/login',{admin:true})
     }
     productHelpers.getAllProducts().then((products)=>{
         console.log(products)
@@ -73,47 +72,46 @@ router.post('/edit-product/:id',(req,res)=>{
     })    
 })
 
-router.get('/category-management',(req,res)=>{
-    res.render('admin/add-category')
+router.get('/admin-signup',(req,res)=>{
+   
+  res.render('admin/admin-signup')
 })
 
-router.get("/adminLogin", (req, res) => {
-    if (req.session.loggedIn) {
-      res.redirect("/admin");
-    } else {
-      res.render('adminLogin', { admin: true, loginErr: req.session.loginErr });
-      req.session.loginErr = false;
+router.post('/admin-signup',(req,res)=>{
+
+  adminHelpers.adminSignup(req.body).then((response)=>{
+    console.log(response)
+    req.session.loggedIn=true
+    req.session.admin=response
+    res.redirect('/')
+  })
+})
+
+router.get('/login',(req,res)=>{
+  if (req.session.admin){
+    res.redirect('/admin')
+  }
+  else{
+    res.render('admin/login',{loginErr:req.session.adminLoginErr,admin:true})
+req.session.adminLoginErr=false
+  }
+})
+
+router.post('/login',(req,res)=>{
+  adminHelpers.adminLogin(req.body).then((response)=>{
+    if(response.status){
+      req.session.admin=response.admin
+      req.session.admin.loggedIn=true
+      res.redirect('/admin')
+    }else{
+      req.session.adminLoginErr="invalid credentials"
+      res.redirect("/admin/login")
     }
-  });
-  
-  router.get("/adminSignup", (req, res) => {
-    res.render("admin/adminSignup", { admin: true });
-  });
-  
-  router.post("/adminSignup", (req, res) => {
-    adminHelpers.adminSignup(req.body).then((response) => {
-      console.log(response);
-      res.redirect("/admin/adminLogin");
-    });
-  });
+  })
+  })
 
-router.post('/adminLogin',(req,res)=>{
-    adminHelpers.adminLogin(req.body).then((response)=>{
-      if(response.status){
-        req.session.loggedIN=true
-        req.session.admin=response.admin
-        res.redirect('/admin')
-      }else{
-        req.session.loginErr="invalid username or password"
-        res.redirect("/adminLogin")
-      }
-    })
-    })
-    
-    router.get("/logout",(req,res)=>{
-        req.session.destroy()
-        res.redirect("/admin")
-      })
-
-
+  router.get('/logout',(req,res)=>{
+    req.session.admin=null
+    res.redirect('/admin/login')
+  })
 module.exports=router;

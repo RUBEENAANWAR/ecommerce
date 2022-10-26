@@ -4,7 +4,7 @@ const router=express.Router();
 const productHelper=require('../helpers/product-helpers')
 const userHelpers=require('../helpers/user-helpers')
 const verifyLogin=(req,res,next)=>{
-  if(req.session.loggedIn){
+  if(req.session.user.loggedIn){
     next()
   }
   else{
@@ -25,12 +25,12 @@ router.get('/',(req,res,next)=>{
 })
 
 router.get('/login',(req,res)=>{
-  if (req.session.loggedIn){
+  if (req.session.user){
     res.redirect('/')
   }
   else{
-    res.render('user/login',{"loginErr":req.session.loginErr})
-req.session.loginErr=false
+    res.render('user/login',{"loginErr":req.session.userLoginErr})
+req.session.userLoginErr=false
   }
 })
 
@@ -38,32 +38,30 @@ router.get('/signup',(req,res)=>{
     res.render('user/signup')
 })
 
-
-
 router.post('/signup',(req,res)=>{
 
   userHelpers.doSignup(req.body).then((response)=>{
     console.log(response)
-    req.session.loggedIn=true
     req.session.user=response
+    req.session.user.loggedIn=true
     res.redirect('/otpLoginVerify')
   })
 })
 router.post('/login',(req,res)=>{
 userHelpers.doLogin(req.body).then((response)=>{
   if(response.status){
-    req.session.loggedIN=true
     req.session.user=response.user
+    req.session.user.loggedIn=true
     res.redirect('/')
   }else{
-    req.session.loginErr="invalid username or password"
+    req.session.userLoginErr="invalid username or password"
     res.redirect("/login")
   }
 })
 })
 
 router.get("/logout",(req,res)=>{
-  req.session.destroy()
+  req.session.user=null
   res.redirect("/")
 })
 
