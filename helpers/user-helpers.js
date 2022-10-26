@@ -5,10 +5,12 @@ const { UserBindingContext } = require('twilio/lib/rest/chat/v2/service/user/use
 const session = require('express-session')
 const dotenv=require('dotenv').config()
 const  client=require('twilio')(process.env.accountSid,process.env.authToken)
+const objectId=require('mongodb').ObjectId
 
 module.exports={
     doSignup:(userData)=>{
         return new Promise(async(resolve,reject)=>{
+            userData.userBlock=false
             userData.Password= await bcrypt.hash(userData.Password,10)
             client
             .verify
@@ -40,7 +42,7 @@ module.exports={
             let loginStatus=false
             let response={}
             let user= await db.get().collection(collection.USER_COLLECTION).findOne({Email:userData.Email})
-            if(user){
+            if(user && !user.userBlocked){
              bcrypt.compare(userData.Password,user.Password).then((status)=>{
                 if(status){
                     console.log("login success")
@@ -101,5 +103,36 @@ client
     res.redirect('/otpLoginVerify')
 
 }
+},
+getAllUsers:()=>{
+            return new Promise(async(resolve,reject)=>{
+                let users=await db.get().collection(collection.USER_COLLECTION).find().toArray()
+                resolve(users)
+            })
+        },
+
+blockUser: (userId) => {
+    return new Promise((resolve, reject) => {
+        db.get().collection(collection.USER_COLLECTION)
+        .updateOne({_id:objectId(userId)}, {
+            $set: {
+                userBlocked: true
+            }
+        }).then((response) => {
+            console.log(userId);
+        resolve(response)
+        })
+    })
+},
+unblockUser:(user) => {
+    return new Promise((resolve, reject) => {
+        db.get().collection(collection.USER_COLLECTION)
+        .updateOne({_id:objectId(user)}, {
+            $set: {
+                userBlocked: false
+            }
+        }).then((response) => {
+        })
+    })
 }
 }

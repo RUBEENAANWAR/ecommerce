@@ -5,6 +5,7 @@ const router=express.Router()
 const productHelpers=require('../helpers/product-helpers')
 const bodyParser=require('body-parser')
 const adminHelpers=require('../helpers/admin-helpers')
+const userHelpers=require('../helpers/user-helpers')
 const {check,validationResult}=require('express-validator')
 const urlencodedParser=bodyParser.urlencoded({extended:false})
 const verifyAdminLogin=(req,res,next)=>{
@@ -72,6 +73,7 @@ router.post('/edit-product/:id',(req,res)=>{
     })    
 })
 
+
 router.get('/admin-signup',(req,res)=>{
    
   res.render('admin/admin-signup')
@@ -110,8 +112,25 @@ router.post('/login',(req,res)=>{
   })
   })
 
+  router.get('/view-users', function(req, res) {
+    userHelpers.getAllUsers().then((users) => {
+      res.render('admin/view-users', {admin : true, users});
+    });
+  });
+  
+  router.get('/block-user/:id', async(req, res) => {
+    userHelpers.blockUser(req.params.id)
+      res.redirect('/admin/view-users')
+  })
+  
+  router.get('/unblock-user/:id', async(req, res) => {
+    userHelpers.unblockUser(req.params.id)
+      res.redirect('/admin/view-users')
+  })      
+
   router.get('/logout',(req,res)=>{
     req.session.admin=null
     res.redirect('/admin/login')
   })
+
 module.exports=router;

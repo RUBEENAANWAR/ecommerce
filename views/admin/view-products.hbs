@@ -3,6 +3,7 @@
 <table class="table mt-2">  
     <div class="row">
         <a href="/admin/add-product" class="btn btn-info m-3 ml-auto"> add product</a>
+        <a href="/admin/logout" class="btn btn-danger" style="width: 8rem; height: 40px; margin-top: 15px;">Logout</a>
 
     </div>
   <thead>
@@ -18,7 +19,7 @@
   <tbody>
     {{#each products}}
     <tr>
-      <th scope="row">1</th>
+      <th scope="row">{{inc @index}}</th>
       <td>{{this.Name}}</td>
       <td>{{this.Category}}</td>
       <td>{{this.Description}}</td>
