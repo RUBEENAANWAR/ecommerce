@@ -8,7 +8,8 @@
     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" style="color: #ffffff;" aria-current="page" href="/view-products">ALL PRODUCTS</a>
+          {{#if admin}}
+          <a class="nav-link active" style="color: #ffffff;" aria-current="page" href="/admin/view-products">ALL PRODUCTS</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" style="color: #ffffff;" href="#">ALL ORDERS</a>
@@ -16,6 +17,10 @@
           <li class="nav-item">
           <a class="nav-link" style="color: #ffffff;" href="/admin/view-users">ALL USERS</a>
         </li>
+         <li class="nav-item">
+          <a class="nav-link" style="color: #ffffff;" href="/admin/category-management">CATEGORY</a>
+        </li>
+        {{/if}}
         
       </ul>
       <form class="d-flex">
