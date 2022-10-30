@@ -1,6 +1,6 @@
 const db = require("../config/connection");
 const collection = require("../config/collections");
-const objectId = require("mongodb").ObjectID;
+const ObjectId = require("mongodb").ObjectID;
 
 module.exports = {
   addProduct: (product, callback) => {
@@ -26,7 +26,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.PRODUCT_COLLECTION)
-        .deleteOne({ _id: objectId(proId) })
+        .deleteOne({ _id: ObjectId(proId) })
         .then((response) => {
           resolve(proId);
         });
@@ -36,7 +36,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.PRODUCT_COLLECTION)
-        .findOne({ _id: objectId(proId) })
+        .findOne({ _id: ObjectId(proId) })
         .then((product) => {
           resolve(product);
         });
@@ -47,7 +47,7 @@ module.exports = {
       db.get()
         .collection(collection.PRODUCT_COLLECTION)
         .updateOne(
-          { _id: objectId(proId) },
+          { _id: ObjectId(proId) },
           {
             $set: {
               index: proDetails.No,

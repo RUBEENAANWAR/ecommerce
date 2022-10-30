@@ -1,6 +1,5 @@
 const express = require("express");
 // const{render}=require('../app')
-// const productHelpers = require('../helpers/product-helpers')
 const router = express.Router();
 const productHelpers = require("../helpers/product-helpers");
 const bodyParser = require("body-parser");

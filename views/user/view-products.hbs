@@ -6,7 +6,7 @@
       <img class="d-block w-100" style="height:50rem ;" src="https://images.ctfassets.net/1nzw6mpfcddc/7Lq3l9JHf4TjCkrTISFTT1/ddcd987ed887f320fc5a00767838326e/unique_boy_names_a_to_z.jpeg" alt="First slide">
     </div>
     <div class="carousel-item">
-      <img class="d-block w-100" style="height:50rem ;"  src="https://media.istockphoto.com/photos/children-in-a-circle-looking-up-picture-id471040390?k=20&m=471040390&s=170667a&w=0&h=YnEAZ5_cZtFwLQ1HHu8r3hcMDvIfHh_LnSVm8_uiFLY=" alt="Second slide">
+      <img class="d-block w-100" style="height:50rem ;" src="https://media.istockphoto.com/photos/children-in-a-circle-looking-up-picture-id471040390?k=20&m=471040390&s=170667a&w=0&h=YnEAZ5_cZtFwLQ1HHu8r3hcMDvIfHh_LnSVm8_uiFLY=" alt="Second slide">
     </div>
     <div class="carousel-item">
       <img class="d-block w-100" style="height:50rem ;" src="https://www.lookslikefilm.com/wp-content/uploads/2019/05/tatiana-rose-gauta-smal01-www.tatianarosephotography.jpg" alt="Third slide">
@@ -31,7 +31,7 @@
   <div class="card-body">
     <h5 class="card-title">{{this.Name}}</h5>
     <p class="card-text">{{this.Description}}</p>
-    <a href="/add-to-cart/{{this._id}}" class="btn btn-primary">ADD TO CART</a>
+    <button onclick="addToCart('{{this._id}}')" class="btn btn-primary">Add to cart</button>
   </div>
  </div>
  </div>
@@ -53,3 +53,15 @@
     -->
   </body>
 </html>
+<script>
+   addToCart(prodId)=>{
+    $.ajax({
+      url:'/add-to-cart/'+proId,
+      method:'get',
+      success:(response)=>{
+        alert(response)
+      }
+    })
+  }
+
+</script>

@@ -3,22 +3,31 @@
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <a style="font-weight:lighter ;color:rgb(235, 219, 219);font-family:cursive;font-size: 2rem;" class="navbar-brand" href="#">HIPS AND HOPS</a>
+  <a style="font-weight:lighter ;color:rgb(235, 219, 219);font-family:cursive;font-size: 2rem;" class="navbar-brand" href="/">HIPS AND HOPS</a>
 
   <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
       <li class="nav-item active">
-        <a class="nav-link" href="/">Products<span class="sr-only">(current)</span></a>
+        
+        <div class="dropdown">
+  <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color:rgb(73, 40, 40)  ; color:#fff">
+Products
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="/categoryGirl">GIRL</a>
+    <a class="dropdown-item" href="/categoryBoy">BOY</a>
+  </div>
+</div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/cart">Cart</a>
+        <a class="nav-link" style="color:#fff" href="/cart">Cart<span class="badge badge-success">{{cartCount}}</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Wishlist</a>
+        <a class="nav-link" style="color:#fff" href="#">Wishlist</a>
       </li>
       {{#if user}}
       <li class="nav-item">
-        <a class="nav-link" href="#">orders</a>
+        <a class="nav-link" style="color:#fff" href="#">orders</a>
       </li>
       {{/if}}
     </ul>

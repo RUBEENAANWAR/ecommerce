@@ -6,6 +6,7 @@ const {
 } = require("twilio/lib/rest/chat/v2/service/user/userBinding");
 const session = require("express-session");
 const { adminCategoryManagement } = require("./admin-helpers");
+const collections = require("../config/collections");
 const dotenv = require("dotenv").config();
 const client = require("twilio")(process.env.accountSid, process.env.authToken);
 const ObjectId = require("mongodb").ObjectId;
@@ -64,6 +65,19 @@ module.exports = {
       }
     });
   },
+  otpSignupVerifyGet: (req, res) => {
+    //session = req.session;
+    if (session.userId) {
+        res.redirect('/');
+    } else if (session.invalidOTP) {
+        session.invalidOTP = false
+        res.render('user/otpLoginVerify', { otpMsg: "Wrong phone number or code" });
+    } else {
+        res.render('user/otpSignupVerify');
+    }
+},
+
+
   otpSignupVerifyPost: (req, res) => {
     if (req.body.otp.length === 6) {
       client.verify
@@ -207,61 +221,18 @@ module.exports = {
       resolve(cartItems[0].cartItems);
     });
   },
+  getCartCount:(userId)=>{
+    return new Promise(async(resolve,reject)=>{
+      let count=0
+      let cart=await db.get().collection(collections.CART_COLLECTION).findOne({user:ObjectId(userId)})
+      if(cart){
+        count=cart.products.length
+      }
+      resolve(count)
+    })
+  }
   
 
   }
-  // addNewCategoryGet:(req,res)=>{
-  //   adminSession=req.session
-  //   if(adminSession.adminId){
-  //       if(adminsession.categoryExist){
-  //         adminSession=req.session
-  //         adminSession.categoryExist=false
-  //         res.render('admin/addNewCategory',{categoryMsg:'category already exist',admin:true})
-  //       }else{
-  //         res.render('admin/addNewCategory',{admin:true})
-  //       }
-  //     }else{
-  //       res.redirect('/admin')
-  //     }
-  //   },
-  //   addNewCategoryPost:(req,res)=>{
-  //     const errors=validationResult(req)
-  //     console.log(errors)
-  //     const error1=errors.errors.find(item=>item.param==='category') || '';
-  //     console.log(error1.msg)
-  //     adminSession=req.session
-  //     if(!errors.isEmpty()){
-  //       res.render('admin/addNewCategory',{categoryMsg:error1.msg,admin:true})
-  //     }else if(adminSession.adminId){
-  //       Category.find({categoryName:req.body.category.toUppercase()}
-  //       .then((result)=>{
-  //         let temp=result.find(item=>item.categoryName)
-  //         if(temp){
-  //           adminSession=req.session
-  //           adminSession.categoryExist=true
-  //           res.redirect('/admin/addNewCategory')
-  //         }else{
-  //           const category=new Category({
-  //             categoryName: req.body.category.toUppercase()
-  //           })
-  //           category.save()
-  //           .then((result)=>{
-  //             console.log(result)
-  //           })
-  //           .catch((err)=>{
-  //             console.log(err)
-  //           })
-  //           adminSession=req.session
-  //           console.log(adminSession)
-  //           res.redirect('/admin/adminCategoryManagement')
-  //         }
-  //       })
-  //       .catch((err)=>{
-  //         console.log(err)
-  //       })
-  //     } else{
-  //       res.redirect('/admin')
-  //     }
 
-  //   }
 

@@ -4,9 +4,12 @@ const router = express.Router();
 const productHelper = require("../helpers/product-helpers");
 const userHelpers = require("../helpers/user-helpers");
 const { check, validationResult } = require("express-validator");
+const productHelpers = require("../helpers/product-helpers");
+const { Db } = require("mongodb");
+const db = require("../config/connection");
+const collections = require("../config/collections");
 const verifyLogin = (req, res, next) => {
-  if (req.session && req.session.user && req.session.user.loggedIn ) {
-    
+  if (req.session && req.session.user && req.session.user.loggedIn) {
     next();
   } else {
     return res.redirect("/login");
@@ -14,11 +17,15 @@ const verifyLogin = (req, res, next) => {
 };
 
 //get home page
-router.get("/", (req, res, next) => {
+router.get("/", async (req, res, next) => {
   let user = req.session.user;
   console.log(user);
+  let cartCount=null
+  if(req.session.user){
+  cartCount = await userHelpers.getCartCount(req.session.user._id);
+  }
   productHelper.getAllProducts().then((products) => {
-    res.render("user/view-products", { products, user });
+    res.render("user/view-products", { products, user, cartCount });
   });
 });
 
@@ -99,8 +106,10 @@ router.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
-
 router.get("/otpLoginVerify", (req, res) => {
+  userHelpers.otpSignupVerifyGet(req, res);
+  req.session.user = response;
+  req.session.user.loggedIn = true;
   res.render("user/otpLoginVerify");
 });
 router.post("/otpLoginVerify", (req, res) => {
@@ -111,16 +120,46 @@ router.post("/otpLoginVerify", (req, res) => {
   res.redirect("/");
 });
 
-router.get("/cart", verifyLogin, async(req, res) => {
-  let products= await userHelpers.getCartProducts(req.session.user._id)
-  console.log(products)
-  res.render("user/cart");
+router.get("/otpSignupVerify", (req, res) => {
+  userHelpers.otpSignupVerifyGet(req, res);
+  res.render("user/otpSignupVerify");
 });
-router.get('/add-to-cart/:id',verifyLogin,(req,res)=>{
-  userHelpers.addToCart(req.params.id,req.session.user._id).then(()=>{
-    res.redirect('/cart')
-  })
-})
 
+router.post("/otpSignupVerify", (req, res) => {
+  userHelpers.otpSignupVerifyPost(req, res);
+  console.log(response);
+  req.session.loggedIn = true;
+  req.session.user = response;
+  res.redirect("/");
+});
+
+router.get("/cart", verifyLogin, async (req, res) => {
+  let products = await userHelpers.getCartProducts(req.session.user._id);
+  console.log(products);
+  res.render("user/cart", { products, user: req.session.user });
+});
+router.get("/add-to-cart/:id", verifyLogin, (req, res) => {
+ console.log('api call')
+  userHelpers.addToCart(req.params.id, req.session.user._id).then(() => { 
+    //res.redirect("/cart");
+  });
+});
+
+router.get("/categoryBoy", async (req, res) => {
+  let boy = await db
+    .get()
+    .collection(collections.PRODUCT_COLLECTION)
+    .find({ category: "BOY" })
+    .toArray();
+  res.render("user/categoryBoy", { boy });
+});
+router.get("/categoryGirl", async (req, res) => {
+  let girl = await db
+    .get()
+    .collection(collections.PRODUCT_COLLECTION)
+    .find({ category: "GIRL" })
+    .toArray();
+  res.render("user/categoryGirl", { girl });
+});
 
 module.exports = router;
