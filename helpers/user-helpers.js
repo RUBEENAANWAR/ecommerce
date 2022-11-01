@@ -281,11 +281,24 @@ module.exports = {
    }
   })
 },
-removeCart:(cartId,proId)=>{
+removeCartProduct:(details)=>{
+  console.log(details)
+  return new Promise((resolve,reject)=>{
+    
+    db.get().collection(collections.CART_COLLECTION)
+    .updateOne({_id:ObjectId(details.cart)},
+    {
+     $pull: {products:{item:ObjectId(details.product)}}
+    }   
   
+ ).then((response)=>{
+   resolve({removeProduct:true})
+ })
+  })
+}
 }
 
-}
+
 
 
     
