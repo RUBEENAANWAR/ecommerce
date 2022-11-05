@@ -8,6 +8,7 @@ const productHelpers = require("../helpers/product-helpers");
 const { Db } = require("mongodb");
 const db = require("../config/connection");
 const collections = require("../config/collections");
+const userControllers = require("../controllers/userControllers");
 const verifyLogin = (req, res, next) => {
   if (req.session && req.session.user && req.session.user.loggedIn) {
     next();
@@ -17,30 +18,11 @@ const verifyLogin = (req, res, next) => {
 };
 
 //get home page
-router.get("/", async (req, res, next) => {
-  let user = req.session.user;
-  console.log(user);
-  let cartCount=null
-  if(req.session.user){
-  cartCount = await userHelpers.getCartCount(req.session.user._id);
-  }
-  productHelper.getAllProducts().then((products) => {
-    res.render("user/view-products", { products, user, cartCount });
-  });
-});
+router.get("/", userControllers.userHome);
 
-router.get("/login", (req, res) => {
-  if (req.session.user) {
-    res.redirect("/");
-  } else {
-    res.render("user/login", { loginErr: req.session.userLoginErr });
-    req.session.userLoginErr = false;
-  }
-});
+router.get("/login", userControllers.userLogin);
 
-router.get("/signup", (req, res) => {
-  res.render("user/signup");
-});
+router.get("/signup", userControllers.userSignup);
 
 router.post(
   "/signup",
@@ -64,125 +46,50 @@ router.post(
   check("Password")
     .matches(/[!@#$%^&*?]/)
     .withMessage("Password must contain at least one special character"),
-  (req, res) => {
-    const errors = validationResult(req);
-    console.log(errors);
-    const error1 = errors.errors.find((item) => item.param === "Name") || "";
-    const error2 = errors.errors.find((item) => item.param === "Email") || "";
-    const error3 =
-      errors.errors.find((item) => item.param === "Password") || "";
-    console.log(error3.msg);
-    if (!errors.isEmpty()) {
-      let errors = {
-        NameMsg: error1.msg,
-        EmailMsg: error2.msg,
-        PasswordMsg: error3.msg,
-      };
-      res.render("user/signup", { errors });
-    } else {
-      userHelpers.doSignup(req.body).then((response) => {
-        req.session.user = response;
-        req.session.user.loggedIn = true;
-        res.redirect("/otpLoginVerify");
-      });
-    }
-  }
+  check("Mobilenumber")
+    .matches(/[\d]{10}/)
+    .withMessage("Please enter a valid mobile number"),
+  check("Mobilenumber")
+    .matches(/^[6-9][\d]{9}/)
+    .withMessage("Please enter a valid mobile number"),
+
+  userControllers.userSignupPost
 );
-router.post("/login", (req, res) => {
-  userHelpers.doLogin(req.body).then((response) => {
-    if (response.status) {
-      req.session.user = response.user;
-      req.session.user.loggedIn = true;
-      res.redirect("/");
-    } else {
-      req.session.userLoginErr = "invalid username or password";
-      res.redirect("/login");
-    }
-  });
-});
 
-router.get("/logout", (req, res) => {
-  req.session.user = null;
-  res.redirect("/");
-});
+router.post("/login", userControllers.userLoginPost);
 
-router.get("/otpLoginVerify", (req, res) => {
-  userHelpers.otpSignupVerifyGet(req, res);
-  req.session.user = response;
-  req.session.user.loggedIn = true;
-  res.render("user/otpLoginVerify");
-});
-router.post("/otpLoginVerify", (req, res) => {
-  userHelpers.otpSignupVerifyPost(req, res);
-  console.log(response);
-  req.session.loggedIn = true;
-  req.session.user = response;
-  res.redirect("/");
-});
+router.get("/logout", userControllers.userLogout);
 
-router.get("/otpSignupVerify", (req, res) => {
-  userHelpers.otpSignupVerifyGet(req, res);
-  res.render("user/otpSignupVerify");
-});
+router.get("/otpLoginVerify", userControllers.otpLoginVerifyGet);
 
-router.post("/otpSignupVerify", (req, res) => {
-  userHelpers.otpSignupVerifyPost(req, res);
-  console.log(response);
-  req.session.loggedIn = true;
-  req.session.user = response;
-  res.redirect("/");
-});
+router.post("/otpLoginVerify", userControllers.otpLoginVerifyPost);
 
-router.get("/cart", verifyLogin, async (req, res) => {
-  let products = await userHelpers.getCartProducts(req.session.user._id);
-  let totalValue=await userHelpers.getTotalAmount(req.session.user._id)
-  console.log(products);
-  res.render("user/cart", { products, user: req.session.user._id,totalValue});
-});
-router.get("/add-to-cart/:id", (req, res) => {
- console.log('api call')
-  userHelpers.addToCart(req.params.id, req.session.user._id).then(() => { 
+router.get("/otpSignupVerify", userControllers.otpSignupVerifyGet);
 
-    res.json({status:true})
-  });
-});
+router.post("/otpSignupVerify", userControllers.otpSignupVerifyPost);
 
-router.get("/categoryBoy", async (req, res) => {
-  let boy = await db
-    .get()
-    .collection(collections.PRODUCT_COLLECTION)
-    .find({ category: "BOY" })
-    .toArray();
-  res.render("user/categoryBoy", { boy });
-});
-router.get("/categoryGirl", async (req, res) => {
-  let girl = await db
-    .get()
-    .collection(collections.PRODUCT_COLLECTION)
-    .find({ category: "GIRL" })
-    .toArray();
-  res.render("user/categoryGirl", { girl });
-});
+router.get("/cart", verifyLogin, userControllers.userCart);
+router.get("/add-to-cart/:id", userControllers.addToCart);
 
-router.post('/change-product-quantity',(req,res,next)=>{
-  userHelpers.changeProductQuantity(req.body).then(async(response)=>{
-    response.total=await userHelpers.getTotalAmount(req.body.user)
-    res.json(response)
-  })
-})
+router.get("/categoryBoy", userControllers.categoryBoy);
+router.get("/categoryGirl", userControllers.categoryGirl);
 
-router.post('/remove-cart-product',(req,res,next)=>{
-  console.log(req.body)
-  userHelpers.removeCartProduct(req.body).then((response)=>{
-    res.json(response)
-  })
-})
-router.get('/place-order',verifyLogin,async(req,res)=>{
-  let total=await userHelpers.getTotalAmount(req.session.user._id)
-  res.render('user/place-order',{total,user:req.session.user})
-})
+router.post("/change-product-quantity", userControllers.changeProductQuantity);
 
-router.post('/place-order',(req,res)=>{
-  console.log(req.body);
-})
+router.post("/remove-cart-product", userControllers.removeCartProduct);
+
+router.get("/place-order", verifyLogin, userControllers.placeOrderGet);
+
+router.post("/place-order", verifyLogin, userControllers.placeOrderPost);
+
+router.get("/order-success", userControllers.orderSuccess);
+
+router.get("/orders", userControllers.ordersGet);
+
+router.get("/view-order-products/:id", userControllers.viewOrderProducts);
+
+router.get("/single-product-view", userControllers.singleProductView);
+
+router.post("/verify-payment", userControllers.verifyPaymentPost);
+
 module.exports = router;

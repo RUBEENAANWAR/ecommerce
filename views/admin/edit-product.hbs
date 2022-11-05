@@ -20,7 +20,7 @@
       <label for="">Image</label>
       <br>
       <img src="/product-images/{{product._id}}.jpg" style="width:5 rem; height:8rem" id="imgView" class="pt-3">
-    <input type="file" name="Image"  class="form-control" onchange="viewImage(event)">
+    <input type="file" name="Image"  class="form-control" onchange="viewImage(event)" value="{{product._id}}">
 
     <button type="submit" class="btn btn-success mt-4">Proceed</button>
 </form>
