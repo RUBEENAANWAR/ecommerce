@@ -157,5 +157,5 @@ module.exports = {
   adminViewUsers,
   adminBlockUser,
   adminUnblockUser,
-  adminLogout,categoryManagement,addNewcategoryGet,addNewCategoryPost,deleteCategory
+  adminLogout,categoryManagement,addNewcategoryGet,addNewCategoryPost,deleteCategory 
 };
