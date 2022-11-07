@@ -109,13 +109,14 @@ userHome=async (req, res, next) => {
 
   const userCart=async (req, res) => {
     let products = await userHelpers.getCartProducts(req.session.user._id);
-    let totalValue=0
-    if(products.length>0){
-        totalValue = await userHelpers.getTotalAmount(req.session.user._id);
-    }
+    if(products.length==0){
+      res.render('user/empty-cart',{user:req.session.user})
+    }else{
+    let totalValue = await userHelpers.getTotalAmount(req.session.user._id);
     console.log(products);
     res.render("user/cart", { products, user: req.session.user._id, totalValue });
   }
+}
 
   const addToCart=(req, res) => {
     console.log("api call");

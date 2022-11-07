@@ -6,6 +6,7 @@
         <a href="/admin/logout" class="btn btn-danger" style="width: 8rem; height: 40px; margin-top: 15px;">Logout</a>
 
     </div>
+  <table class="table mt-5" id="productsTable">
   <thead>
     <tr>
       <th scope="col">no</th>
@@ -14,6 +15,7 @@
       <th scope="col">Description</th>
       <th>Image</th>
       <th scope="col">Price</th>
+      <th>Options</th>
     </tr>
   </thead>
   <tbody>
@@ -34,7 +36,13 @@
 {{/each}}
   </tbody>
 </table>
+</table>
 
 
 </div>
 </section>
+<script>
+$(document).ready( function () {
+    $('#productsTable').DataTable();
+} );
+</script>
