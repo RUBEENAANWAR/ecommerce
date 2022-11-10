@@ -1,36 +1,36 @@
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
 
 <div class="container mt-5 mb-5">
+    
 	<div class="card">
+
+
 		<div class="row g-0">
 			<div class="col-md-6 border-end">
+        
+        
+       
 				<div class="d-flex flex-column justify-content-center">
-					<div class="main_image"> <img src="/product-images/634f954ef4778f9933ce88ce.jpg" data-imagezoom="true"
+         
+					<div class="main_image"> <img src="/product-images/{{this.product._id}}.jpg" data-imagezoom="true"
 							id="main_product_image" width="280" height="320"> </div>
 					<div class="thumbnail_images">
-						<ul id="thumbnail">
-							<li><img onclick="changeImage(this)" src="/product-images/634f954ef4778f9933ce88ce.jpg"
-									 width="60"></li>
-							<li><img onclick="changeImage(this)" src="/product-images/ru.jpg"
-									 width="60"></li>
-							<li><img onclick="changeImage(this)" src="/product-images/636340861dce1ce97f8aeb1a.jpg"
-									 width="60"></li>
-							<li><img onclick="changeImage(this)" src="/product-images/6363403f1dce1ce97f8aeb19.jpg"
-									 width="60"></li>
-						</ul>
+						
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6">
+      
+			<div class="col-md-5">
+
 				<div class="p-3 right-side">
 					<div class="d-flex justify-content-between align-items-center">
 						<h3>
 							{{this.product.Name}}
-						</h3> <span class="heart"><i class='bx bx-heart'></i></span>
+						</h3> 
 					</div>
 					<div class="description mt-2">
 						<p>
-							{{this.product.Description}}
+							{{this.product.category}}
 						</p>
 					</div>
 					<h3>Rs.{{this.product.Price}}
@@ -38,37 +38,39 @@
 					<div class="ratings d-flex flex-row align-items-center">
 						<div class="d-flex flex-row"> <i class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i
 								class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i class='bx bx-star'></i> </div>
-						<span>441 reviews</span>
+					
 					</div>
-					<div class="mt-5"> <span class="fw-bold">Color</span>
-						<div class="colors">
-							<ul id="marker">
-								<li id="marker-1"></li>
-								<li id="marker-2"></li>
-								<li id="marker-3"></li>
-								<li id="marker-4"></li>
-								<li id="marker-5"></li>
-							</ul>
-						</div>
-					</div>
+          
+					
 					<div class="buttons d-flex flex-row mt-5 gap-3">
 						<form action="/addToWishlist" method="post">
 							<input type="hidden" name="id" value=" product._id ">
 						 <button class="btn btn-outline-danger">Add to Wishlist 🤍 </button>
 						</form> 
-						<form action="/add-to-cart/:id" method="post">
-							<input type="hidden" name="id" value=" product._id ">
-							<button class="btn btn-dark btn">Add to Cart</button>
-						</form>
-					</div>
+						{{!-- <form action="/add-to-cart/{{this.product}}" method="post">
+							 <button onclick="addToCart('{{this._id}}')"class="btn btn-outline-dark">Add to cart</button>
+						</form> --}}
+                        
+            <button onclick="addToCart('{{this.product._id}}')" class="btn btn-outline-dark">Add to cart</button>
+          </div>
 					<!-- <div class="search-option"> <i class='bx bx-search-alt-2 first-search'></i>
 						<div class="inputs"> <input type="text" name=""> </div> <i class='bx bx-share-alt share'></i> -->
 				</div>
 			</div>
+      <div class="col-md-1 d-flex flex-row-reverse" >
+        <a href="/" style="text-decoration:none; color:#000;">
+        <span class="heart"><i class='fa-sharp fa-solid fa-xmark' ></i></span></a>
+      </div>
+      
 		</div>
+    
 	</div>
+ 
 </div>
+
 </div>
+
+
 
 <style>
     body {
@@ -396,7 +398,7 @@ p {
 
 /* Edit Profile */
 body {
-    background: #BA68C8;
+    background: #918282;
   }
   
   .form-control:focus {
@@ -438,6 +440,8 @@ body {
     
 }
 </script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+<script src="https://kit.fontawesome.com/98c7006d3c.js" crossorigin="anonymous"></script>
 
 <script>
     /**

@@ -13,8 +13,8 @@ const client = require("twilio")(process.env.accountSid, process.env.authToken);
 const ObjectId = require("mongodb").ObjectId;
 const Razorpay=require('razorpay')
 const instance =new Razorpay({
-  key_id:'rzp_test_v9tMjvF4MlbMnH',
-  key_secret:'rjo0BslxUFDQUjCJbcIvAkwk',
+  key_id:'rzp_test_IGPhwTArryE2pg',
+  key_secret:'cGwrxiIueSbqzIndqCXFt7Qz',
 })
 
 module.exports = {
@@ -398,44 +398,44 @@ module.exports = {
       resolve(cart?.products)
     })
   },
-  getUserOrders:(userId)=>{
-    return new Promise(async(resolve,reject)=>{
+  getUserOrders: (userId) => {
+    return new Promise(async (resolve, reject) => {
       console.log(userId)
-      let orders=await db.get().collection(collections.ORDER_COLLECTION).find({userId:ObjectId(userId)}).toArray() 
-      console.log(orders);
+      let orders = await db.get().collection(collection.ORDER_COLLECTION).find({ userId: ObjectId(userId) }).toArray()
+    
       resolve(orders)
     })
   },
 
-  getOrderProducts:(orderId)=>{
-    return new Promise(async(resolve,reject)=>{
-      let orderItems=await db.get().collection(collections.ORDER_COLLECTION).aggregate([
+  getOrderProducts: (orderId) => {
+    return new Promise(async (resolve, reject) => {
+      let orderItems = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
         {
-          $match:{_id:ObjectId(orderId)}
+          $match: { _id: ObjectId(orderId) }
         },
         {
-          $unwind:"$products"
+          $unwind: "$products"
         },
         {
-          $project:{
-            item:'$products.item',
-            quantity:'$products.quantity'
+          $project: {
+            item: '$products.item',
+            quantity: '$products.quantity'
           }
         },
         {
-          $lookup:{
-            from:collection.PRODUCT_COLLECTION,
-            localField:'item',
-            foreignField:'_id',
-            as:'product'
+          $lookup: {
+            from: collection.PRODUCT_COLLECTION,
+            localField: 'item',
+            foreignField: '_id',
+            as: 'product'
 
           }
         },
-       {
-        $project:{
-          item:1,quantity:1,product:{$arrayElemAt:['$product',0]}
+        {
+          $project: {
+            item: 1, quantity: 1, product: { $arrayElemAt: ['$product', 0] }
+          }
         }
-       }
 
       ]).toArray()
       console.log(orderItems)
@@ -445,7 +445,7 @@ module.exports = {
   generateRazorpay:(orderId,total)=>{
     return new Promise((resolve,reject)=>{
       let options={
-        amount:total*100, //amount in the smallest currency unit
+        amount: total*100, //amount in the smallest currency unit
         currency:'INR',
         receipt:""+orderId
       };
@@ -465,7 +465,7 @@ module.exports = {
   verifyPayment:(details)=>{
     return new Promise((resolve,reject)=>{
       const crypto=require('crypto')
-      let hmac=crypto.createHmac('sha256','rjo0BslxUFDQUjCJbcIvAkwk')
+      let hmac=crypto.createHmac('sha256','cGwrxiIueSbqzIndqCXFt7Qz')
       hmac.update(details['payment[razorpay_order_id]']+'|'+details['payment[razorpay_payment_id]'])
       hmac=hmac.digest('hex')
       if(hmac==details['payment[razorpay_signature]']){
@@ -486,6 +486,86 @@ module.exports = {
       }
       ).then(()=>{
         resolve()
+      })
+    })
+  },
+  singleProductView:(proId)=>{
+    return new Promise((resolve,reject)=>{
+      db.get().collection(collections.PRODUCT_COLLECTION).findOne({_id:ObjectId(orderId)})
+      resolve(product)
+    })
+  },
+  cancelOrder:(orderId)=>{
+    return new Promise((resolve,reject)=>{
+      let status='Cancelled'
+      db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:ObjectId(orderId)},
+      {
+        $set:{
+          status:status,
+          cancelButton:false
+        }
+      }).then((response)=>{
+        resolve()
+      }).catch((error)=>{
+        reject(error)
+      })
+    })
+  },
+  addAddress:(details)=>{
+    return new Promise((resolve,reject)=>{
+      db.get().collection(collection.ADDRESS_COLLECTION).insertOne(details).then((data)=>{
+        resolve(data)
+      }).catch((error)=>{
+        reject(error)
+      })
+    })
+  },
+
+  updateAddress:(addressId,address)=>{
+    try{
+      return new Promise(async(resolve,reject)=>{
+        await db.get().collection(collection.ADDRESS_COLLECTION).updateOne({
+          _id:ObjectId(addressId)
+        },
+        {
+          $set:{
+            Name:address.Name,
+            Email:address.Email,
+            Mobilenumber:address.Mobilenumber,
+            Pincode:address.Pincode,
+            address:address.address
+          }
+          
+        }).then((response)=>{
+          resolve()
+        })
+      })
+    }catch{
+      reject()
+    }
+  },
+
+  getAddress:(userId)=>{
+    return new Promise(async(resolve,reject)=>{
+      let address= await db.get().collection(collection.ADDRESS_COLLECTION).find({userId:userId}).toArray()
+      resolve(address)
+    })
+  },
+
+  userInfoUpdate:(userId,data)=>{
+    return new Promise(async(resolve,reject)=>{
+      await db.get().collection(collection.USER_COLLECTION).updateOne({
+        _id:ObjectId(userId)
+      },
+      {
+        $set:{
+          Email:data.Email,
+          Mobilenumber:data.Mobilenumber
+        }
+      }).then((response)=>{
+        resolve()
+      }).catch((error)=>{
+        reject(error)
       })
     })
   }

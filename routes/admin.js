@@ -13,7 +13,7 @@ const fs = require("fs");
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const adminControllers = require("../controllers/adminControllers");
 const verifyAdminLogin = (req, res, next) => {
-  if (req.session.admin.loggedIn) {
+  if (req.session && req.session.admin && req.session.admin.loggedIn) {
     next();
   } else {
     res.redirect("/login");
@@ -23,7 +23,7 @@ const verifyAdminLogin = (req, res, next) => {
 router.get("/", adminControllers.adminHomePage);
 
 router.get("/add-product", adminControllers.addProductGet);
-router.post("/add-product");
+router.post("/add-product",adminControllers.addProductPost);
 
 router.get("/delete-product/:id", adminControllers.deleteProductGet);
 
@@ -51,6 +51,31 @@ router.get("/category-management", adminControllers.categoryManagement);
 router.get("/addNewCategory", adminControllers.addNewcategoryGet);
 
 router.post("/addNewCategory", adminControllers.addNewCategoryPost);
+
 router.get("/delete-category/:id", adminControllers.deleteCategory);
+
+router.get("/order-management", adminControllers.adminOrderManagement);
+
+// router.get('/viewOrderUp/:orderId',verifyAdminLogin,adminControllers.adminOrderUp)
+
+// router.get('/cancelOrder/:orderId',adminControllers.cancelOrder)
+router.get('/viewOrderUp/:orderId',verifyAdminLogin,adminControllers.adminOrderUp)
+
+router.post("/cancelOrder/:orderId",adminControllers.cancelOrder)
+
+router.post("/orderStatusUpdate/:orderId",(req,res)=>{
+  let orderId=req.params.orderId
+  let status=req.body.status
+
+  adminHelpers.updateOrderStatus(orderId,status).then((response)=>{
+    res.redirect("../viewOrderUp/"+orderId)
+  }).catch((error)=>{
+    console.log(error);
+  })
+})
+
+router.get('/sales-report',(req,res)=>{
+  res.render('admin/salesReport')
+})
 
 module.exports = router;

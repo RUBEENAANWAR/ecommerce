@@ -2,7 +2,9 @@ const db = require("../config/connection");
 const collection = require("../config/collections");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
+const collections = require("../config/collections");
 const ObjectId = require("mongodb").ObjectID;
+const {ObjectID}=require('bson')
 
 module.exports = {
   adminSignup: (adminData) => {
@@ -45,7 +47,7 @@ module.exports = {
     });
   },
   addCategory: (category, callback) => {
-     console.log(category)
+    console.log(category);
     db.get()
       .collection("category")
       .insertOne(category)
@@ -73,5 +75,60 @@ module.exports = {
         });
     });
   },
-
+  allOrders: () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        let orders = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .aggregate([
+            {
+              $match: { status: { $nin: ["waiting for approval"] } },
+            },
+          ])
+          .sort({ _id: -1 })
+          .toArray();
+        resolve(orders);
+      } catch {
+        reject();
+      }
+    });
+  },
+  orderDetails:(orderId)=>{
+    return new Promise(async (resolve,reject)=>{
+      let orderDetails=await db.get().collection(collection.ORDER_COLLECTION).find({_id:ObjectID(orderId)}).toArray()
+      resolve(orderDetails)
+    })
+  },
+  cancelOrder:(orderId,remark)=>{
+    return new Promise((resolve,reject)=>{
+      let status='Cancelled'
+      db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:ObjectID(orderId)},
+      {
+        $set:{
+          status:status,
+          remark:remark
+        }
+      }).then((response)=>{
+        resolve()
+      }).catch((error)=>{
+        reject(error)
+      })
+    })
+  },
+  updateOrderStatus:(orderId,status)=>{
+    let s1=status
+    return new Promise((resolve,reject)=>{
+      db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:ObjectId(orderId)},
+      {
+        $set:{
+          status:s1,
+        }
+      }).then((response)=>{
+        resolve()
+      }).catch((error)=>{
+        reject(error)
+      })
+    })
+  }
 };

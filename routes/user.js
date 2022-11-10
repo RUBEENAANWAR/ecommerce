@@ -84,12 +84,93 @@ router.post("/place-order", verifyLogin, userControllers.placeOrderPost);
 
 router.get("/order-success", userControllers.orderSuccess);
 
-router.get("/orders", userControllers.ordersGet);
+// router.get("/orders", verifyLogin,userControllers.ordersGet);
 
 router.get("/view-order-products/:id", userControllers.viewOrderProducts);
 
-router.get("/single-product-view", userControllers.singleProductView);
+// router.get("/single-product-view", userControllers.singleProductView);
+router.get('/single-product-view',async(req,res)=>{
+  let id = req.query.id;
+  console.log(id);
+  let product=await productHelper.singleProductView(id)
+  console.log(product);
 
-router.post("/verify-payment", userControllers.verifyPaymentPost);
+  res.render('user/single-product-view',{product})
+})
+
+router.get('/cancelOrder/:orderId',verifyLogin,(req,res)=>{
+  let orderId=req.params.orderId
+  userHelpers.cancelOrder(orderId).then((response)=>{
+    res.redirect('/orders')
+  }).catch((error)=>{
+    console.log(error);
+  })
+})
+router.get("/orders", verifyLogin, async (req, res) => {
+
+  let orders = await userHelpers.getUserOrders(req.session.user._id)
+
+  let orders1 = []
+
+  for (let order of orders) {
+    order.cancelButton = true
+    if (order.status == "Cancelled") {
+
+      order.cancelButton = false
+    }
+    orders1.push(order)
+  }
+
+
+  res.render('user/orders', { user: req.session.user, orders1 })
+})
+
+router.post("/verify-payment",verifyLogin, userControllers.verifyPaymentPost);
+
+router.get('/userProfile',verifyLogin,async(req,res)=>{
+  let user=req.session.user
+  let cartCount=await userHelpers.getCartCount(user._id)
+  let address= await userHelpers.getAddress(user._id)
+  res.render('user/userProfile',{user,cartCount,address})
+})
+
+router.post('/userAddress/:id', verifyLogin,(req,res)=>{
+  let user=req.session.user
+  let addressId=req.params.id
+  userHelpers.updateAddress(addressId,req.body).then(()=>{
+    res.redirect('../userProfile')
+  }).catch((error)=>{
+    console.log(error)
+  })
+})
+
+router.post('/userInfoUpdate', verifyLogin, (req, res) => {
+  let user = req.session.user
+  userHelpers.userInfoUpdate(user._id, req.body).then(() => {
+    res.redirect('./userProfile')
+  }).catch((error) => {
+    //res.redirect('../error')
+    //console.log(errors);
+  })
+
+})
+
+router.get('/addAddress', verifyLogin,async (req, res) => {
+  let user = req.session.user
+  let cartCount = await userHelpers.getCartCount(user._id)
+  res.render('user/userNewAddress', {user, cartCount })
+})
+
+router.post('/addAddress', verifyLogin, async (req, res) => {
+  let user = req.session.user
+  let details = req.body
+  details.userId = user._id;
+  details.default = false;
+  userHelpers.addAddress(details).then((data) => {
+    res.redirect('./userProfile')
+  })
+
+})
+
 
 module.exports = router;

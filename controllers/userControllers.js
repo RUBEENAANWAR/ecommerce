@@ -154,7 +154,8 @@ userHome=async (req, res, next) => {
   }
   const placeOrderGet=async (req, res) => {
     const total = await userHelpers.getTotalAmount(req.session.user._id);
-    res.render("user/place-order", { total, user: req.session.user });
+    const address= await userHelpers.getAddress(req.session.user._id)
+    res.render("user/place-order", { total, user: req.session.user,address});
   }
 
   const placeOrderPost=async (req, res) => {
@@ -167,6 +168,7 @@ userHome=async (req, res, next) => {
         res.json({ codSuccess: true });
       }else{
         userHelpers.generateRazorpay(orderId,totalPrice).then((response)=>{
+          console.log(response);
           res.json(response)
         })
       }
@@ -179,21 +181,38 @@ userHome=async (req, res, next) => {
     res.render("user/order-success", { user: req.session.user });
   }
 
-  const ordersGet=async (req, res) => {
-    console.log();
-    let orders = await userHelpers.getUserOrders(req.session.user._id);
+  // const ordersGet=async (req, res) => {
+  //   console.log();
+  //   let orders = await userHelpers.getUserOrders(req.session.user._id)
+
+  //   let orders1 = []
   
-    res.render("user/orders", { user: req.session.user, orders });
-  }
+  //   for (let order of orders) {
+  //     order.cancelButton = true
+  //     if (order.status == "Cancelled") {
+  
+  //       order.cancelButton = false
+        
+  //     }
+  //     orders1.push(order)
+  //   }
+  // console.log("asdfg::::",orders1);
+  
+  //   res.render('user/orders', { user: req.session.user, orders1 });
+  // }
 
   const viewOrderProducts=async (req, res) => {
     let products = await userHelpers.getOrderProducts(req.params.id);
     res.render("user/view-order-products", { user: req.session.user, products });
   }
-  const singleProductView= (req, res) => {
-    console.log('insingle');
-    res.render("user/single-product-view", { user: req.session.user });
-  }
+  // const singleProductView= async(req, res) => {
+  //   let id=req.query.id
+  //   console.log(id);
+  //   let product = await productHelper.singleProductView(id);
+  //   console.log(product);
+  //   res.render("user/single-product-view",{product});
+
+  // }
 
   const verifyPaymentPost=(req,res)=>{
     console.log(req.body)
@@ -228,9 +247,7 @@ userHome=async (req, res, next) => {
     placeOrderGet,
     placeOrderPost,
     orderSuccess,
-    ordersGet,
     viewOrderProducts,
-    singleProductView,
     verifyPaymentPost
 
   }

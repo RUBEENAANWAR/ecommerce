@@ -1,18 +1,18 @@
  <header>
-  <nav style="background:#7e658a" ,nav class="navbar navbar-expand-lg">
+  <nav style="background-color:#7e658a" class="navbar navbar-expand-lg">
   <div class="container-fluid">
     <a style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ; font-size: 2.5rem;text-decoration:none; color:beige" ,class="navbar-brand" href="#">ADMIN PANEL</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+      <span class="navbar-toggler-icon" ></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          {{#if admin}}
+          {{#if adminData}}
           <a class="nav-link active" style="color: #ffffff;" aria-current="page" href="/admin">ALL PRODUCTS</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" style="color: #ffffff;" href="#">ALL ORDERS</a>
+          <a class="nav-link" style="color: #ffffff;" href="admin/order-management">ALL ORDERS</a>
         </li>
           <li class="nav-item">
           <a class="nav-link" style="color: #ffffff;" href="/admin/view-users">ALL USERS</a>
@@ -23,10 +23,7 @@
         {{/if}}
         
       </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+      
     </div>
   </div>
  </nav>

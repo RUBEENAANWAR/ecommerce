@@ -120,29 +120,86 @@ const adminLogout = (req, res) => {
   req.session.admin = null;
   res.redirect("/admin/login");
 };
-const categoryManagement=(req,res)=>{
-    adminHelpers.getCategory().then((category)=>{
+const categoryManagement = (req, res) => {
+  adminHelpers.getCategory().then((category) => {
+    console.log(category);
+    res.render("admin/adminCategoryManagement", { admin: true, category });
+  });
+};
+const addNewcategoryGet = (req, res) => {
+  res.render("admin/addNewCategory");
+};
+const addNewCategoryPost = (req, res) => {
+  adminHelpers.addCategory(req.body, (id) => {
+    adminHelpers.getCategory().then((category) => {
       console.log(category);
-      res.render("admin/adminCategoryManagement", { admin: true,category});
+      res.render("admin/adminCategoryManagement", { admin: true, category });
     });
-    }
- const addNewcategoryGet=(req,res)=>{
-    res.render('admin/addNewCategory')
-  }   
-  const addNewCategoryPost=(req,res)=>{
-    adminHelpers.addCategory(req.body,(id)=>{
-      adminHelpers.getCategory().then((category)=>{
-        console.log(category)
-        res.render('admin/adminCategoryManagement', {admin:true,category})
-      })
-    })
-  }
-  const deleteCategory= (req, res) => {
-    let categoryId = req.params.id;
-    adminHelpers.deleteCategory(categoryId).then((response) => {
-      res.redirect("/admin/category-management");
-    });
-  }
+  });
+};
+const deleteCategory = (req, res) => {
+  let categoryId = req.params.id;
+  adminHelpers.deleteCategory(categoryId).then((response) => {
+    res.redirect("/admin/category-management");
+  });
+};
+
+const adminOrderManagement=(req,res)=>{
+  let adminData=req.session.admin
+  adminHelpers.allOrders().then((orders)=>{
+    res.render('admin/order-management',{admin:true,orders,adminData})
+  }).catch((error)=>{
+  })
+}
+
+const adminOrderUp=async(req,res)=>{
+  let orderId=req.params.orderId
+  // console.log("SESSION",req.params.orderId);
+  let adminData=req.session.admin
+  let proDetails=await userHelpers.getOrderProducts(orderId)
+  // console.log("PRODUCT DETILAS123",proDetails);
+  adminHelpers.orderDetails(orderId).then((orderDetails)=>{
+  // console.log("ORDER DETILAS123",orderDetails);
+
+    res.render("admin/adminOrderView",{admin:true,orderDetails,proDetails,adminData})
+  })
+}
+
+const cancelOrder=(req,res)=>{
+  let orderId=req.params.orderId
+  let remark=req.body.remark
+  adminHelpers.cancelOrder(orderId,remark).then((response)=>{
+    res.redirect('../viewOrderUp/' + orderId)
+  }).catch((error)=>{
+    console.log(error);
+  })
+}
+// const adminOrderUp=async(req,res)=>{
+//   let orderId=req.params.orderId
+//   console.log("session--",orderId);
+//   console.log(orderId  + "orderId from adminOrderUp")  
+//   let adminData=req.session.admin
+//    let proDetails=await userHelpers.getOrderProducts(orderId)
+//    console.log("deatilsa1233",proDetails);
+//   adminHelpers.orderDetails(orderId).then((orderDetails)=>{
+//    console.log("deatilsa1233",orderDetails);
+
+//     res.render('admin/adminOrderView',{admin:true,orderDetails,proDetails,adminData})
+//   }).catch((errors)=>{
+
+//   })
+// }
+
+// const cancelOrder=(req,res)=>{
+//   let orderId=req.params.orderId
+//   let remark=req.body.remark
+//   adminHelpers.cancelOrder(orderId,remark).then((response)=>{
+//     res.redirect('../viewOrderUp/'+orderId)
+//   }).catch((error)=>{
+//     console.log(error)
+//   })
+// }
+
 module.exports = {
   adminHomePage,
   addProductGet,
@@ -157,5 +214,12 @@ module.exports = {
   adminViewUsers,
   adminBlockUser,
   adminUnblockUser,
-  adminLogout,categoryManagement,addNewcategoryGet,addNewCategoryPost,deleteCategory 
+  adminLogout,
+  categoryManagement,
+  addNewcategoryGet,
+  addNewCategoryPost,
+  deleteCategory,
+  adminOrderManagement,
+  adminOrderUp,
+  cancelOrder
 };

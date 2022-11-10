@@ -1,5 +1,6 @@
 const db = require("../config/connection");
 const collection = require("../config/collections");
+
 const ObjectId = require("mongodb").ObjectID;
 
 module.exports = {
@@ -63,4 +64,13 @@ module.exports = {
         });
     });
   },
+  singleProductView:(proId)=>{
+    console.log(proId);
+    return new Promise(async(resolve,reject)=>{
+     const product=await db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id:ObjectId(proId)})
+            resolve(product)
+    
+     
+    })
+}
 };

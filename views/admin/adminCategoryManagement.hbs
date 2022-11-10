@@ -4,12 +4,12 @@
     <a href="/admin/addNewCategory" class="btn btn-dark mb-3">Add new category</a>
      </div>
      <div class="d-flex mb-3">
-<table class="table">
+<table class="table mt-5" id="productsTable">
 <thead>
     <tr>
         <th scope="col">Sl.</th>
         <th scope="col">Category</th>
-        <th scope="col"></th>
+        <th scope="col">options</th>
     </tr>
 </thead>
 <tbody>
@@ -31,3 +31,8 @@
 
      </div>
 </div>
+<script>
+$(document).ready( function () {
+    $('#productsTable').DataTable();
+} );
+</script>

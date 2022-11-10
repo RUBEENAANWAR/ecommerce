@@ -1,5 +1,5 @@
 <header >
-    <nav style="background:rgb(73, 40, 40) ;" class="navbar navbar-expand-lg ">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: rgb(73,40,40);" >
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -10,7 +10,7 @@
       <li class="nav-item active">
         
         <div class="dropdown">
-  <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color:rgb(73, 40, 40)  ; color:#fff">
+  <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
 Products
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -43,6 +43,8 @@ Account
  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     {{#if user}}
     <a class="dropdown-item" href="/logout">Logout</a>
+    <a class="dropdown-item" href="/userProfile">User Profile</a>
+
     {{else}}
     <a class="dropdown-item" href="/login">Login</a>
     <a class="dropdown-item" href="/signup">signup</a>

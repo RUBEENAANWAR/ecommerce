@@ -5,6 +5,7 @@
         <h3 class="">USER MANAGEMENT</h3>
     </div>
     <table class="table mt-5">
+      <table class="table mt-5" id="productsTable">
       <thead>
         <tr>
           <th scope="col">No</th>
@@ -32,5 +33,11 @@
         {{/each}}
       </tbody>
     </table>
+    </table>
   </div>
 </section>
+<script>
+$(document).ready( function () {
+    $('#productsTable').DataTable();
+} );
+</script>

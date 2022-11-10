@@ -1,6 +1,6 @@
 <section>
-    <div class="container">
-        <table class="table mt-5">
+    <div class="container mt-5">
+        <table class="table mt-5" id="productsTable">
             <thead>
                 <tr>
 
@@ -8,6 +8,8 @@
                     <th scope="col">Title</th>
                     <th scope="col">Price</th>
                     <th scope="col">Quantity</th>
+                    <th scope="col">Options</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -37,6 +39,12 @@
 </div>
     </div>
 </section>
+
+<script>
+$(document).ready( function () {
+    $('#productsTable').DataTable();
+} );
+</script>
 
 <script>
     function changeQuantity(cartId,proId,userId,count){

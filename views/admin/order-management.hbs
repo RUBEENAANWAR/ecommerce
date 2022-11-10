@@ -1,0 +1,68 @@
+<div class="col-lg-12  me-1 mt-3" style="margin:black ;">
+    <h1>
+        {{!-- <p class="text-center mt-1"> <i><b>Number of Product found {{count}} </b></i></p> --}}
+        {{!--
+        <hr style="height:2px;border-width:0;"> --}}
+    </h1>
+    <div class="mask d-flex align-items-center mb-3 h-80">
+        <div class="container ">
+            <div class="row justify-content-center">
+                <div class="col-lg-12">
+                    <div class="table-responsive bg-white">
+                        <table class="table mb-0 mt-3" id="productsTable" style="border-style:2px ; border-color: black;" >
+                            <thead>
+                                <tr>
+
+                                    <th scope="col">Order Date</th>
+                                    <th scope="col">Customer Name</th>
+                                    <th scope="col">Address</th>
+                                    <th scope="col">Payment Method</th>
+                                    <th scope="col">Price</th>
+                        
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each orders}}
+                                <tr>
+
+                                    <th scope="row" >{{this.date}}</th>
+                                    <td>{{this.deliveryDetails.name}}</td>
+                                    <td>{{this.deliveryDetails.address}}</td>
+                                    <td> {{this.paymentMethod}} </td>
+                                    <td>Rs. {{this.totalAmount}} </td>
+                                   <td>{{this.status}}</td>
+                                    <td><a type="button" href="/admin/viewOrderUp/{{this._id}}"
+                                            class="btn btn-primary">View More</a></td>
+
+
+
+                                    <!-- Modal -->
+
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<script>
+    console.log(orders)
+</script>
+
+
+
+
+
+    </div>
+
+</div>
+<script>
+  $(function(){
+    $('#productsTable').DataTable()
+  })
+</script>
