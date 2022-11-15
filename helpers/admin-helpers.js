@@ -86,7 +86,7 @@ module.exports = {
               $match: { status: { $nin: ["waiting for approval"] } },
             },
           ])
-          .sort({ _id: -1 })
+          .sort({ date: -1 })
           .toArray();
         resolve(orders);
       } catch {
@@ -103,6 +103,22 @@ module.exports = {
   cancelOrder:(orderId,remark)=>{
     return new Promise((resolve,reject)=>{
       let status='Cancelled'
+      db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:ObjectID(orderId)},
+      {
+        $set:{
+          status:status,
+          remark:remark
+        }
+      }).then((response)=>{
+        resolve()
+      }).catch((error)=>{
+        reject(error)
+      })
+    })
+  },
+  returnOrder:(orderId,remark)=>{
+    return new Promise((resolve,reject)=>{
+      let status='Waiting for approval'
       db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:ObjectID(orderId)},
       {
         $set:{

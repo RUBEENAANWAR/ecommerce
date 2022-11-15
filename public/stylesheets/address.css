@@ -1,116 +1,5 @@
-<div class="container mt-4 ">
-<section class="h-100 gradient-custom">
-  <div class="page-content page-container" id="page-content">
-    <div class="padding">
-      <div class="padding"></div>
-      <div class="row container d-flex justify-content-center">
-        <div class="col-md-6 col-lg-12">
-          <div class="card user-card-full">
-            <div class="row m-l-0 m-r-0">
-              <div class="col-sm-4 bg-c-lite-green user-profile">
-                <div class="card-block text-center text-white">
-                  <div class="m-b-25 mt-5 pb-4" style="  color:rgb(131, 128, 128);border-style:solid ;">
-
-                    {{#if user}}
-                
-
-                    <img src="https://img.icons8.com/bubbles/100/000000/user.png" class="img-radius"
-                      alt="User-Profile-Image" />
-                    <h5 style=" color: black; text-align: center;"><b>Hello, {{user.Name}}</b></h5>
-                    <h5 style=" color: black; text-align: center;"><b>Hello, {{user.Email}}</b></h5>
-                    
-
-                    <br>
-
-
-                  </div>
-                  {{!-- <h6 class="f-w-600">{{user.Name}}</h6> --}}
-                  {{!-- <a href="/user/userProfile" style="color: blue;margin-left: 5%;">Change Password ?</a> --}}
-                  <i class="mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"></i>
-                </div>
-              </div>
-              <div class="col-sm-8">
-                <div class="card-block">
-                   {{/if}}
-                    <hr2>
-                  
-                  
-                  <div class="container">
-                  <h3 class="text-center mt-3 mb-1" style="text-decoration: underline;"><b>Address</b></h3>
-
-                    <div class="row ">
-
-                      {{#each address}}
-                      <div class="col-lg-6 mt-4">
-                        <div class="card card-margin">
-                          <div class="card-header no-border">
-                            <h5 class="card-title">{{#if this.default}}
-                              <span class="badge badge-success">Default</span>
-                              {{/if}}
-
-                            </h5>
-                          </div>
-                          <div class="card-body pt-0">
-                            <div class="widget-49">
-                              <div class="widget-49-title-wrapper">
-
-                                <div class="widget-49-meeting-info">
-                                  <span class="widget-49-pro-title">{{this.flat}}</span>
-                                  <span class="widget-49-pro-title">{{this.area}}</span>
-                                  <span class="widget-49-pro-title">{{this.landmark}}</span>
-                                  <span class="widget-49-pro-title">{{this.pincode}}</span>
-                                  <span class="widget-49-pro-title">{{this.city}}</span>
-                                  <span class="widget-49-pro-title">{{this.state}}</span>
-
-
-                                </div>
-                              </div>
-                           
-                              
-                             
-                              <div class="widget-49-meeting-action">
-                                <div class="row">
-                                  <div class="col">{{#if this.default}}
-                                    {{!-- {{else}}
-                                    <a href="/addressDefault/{{this._id}}" class="btn btn-sm btn-primary">Set as
-                                      Default</a> --}}
-                                    {{/if}}
-                                  </div>
-                                  <div class="col"> <a href="/addressUpdate/{{this._id}}"
-                                      class="btn btn-sm btn-success">Update</a></div>
-
-                                </div>
-
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      {{/each}}
-                      <div class="row">
-                    <div class="col"></div>
-                    <div class="col-lg-4 mt-3"> <a href="/addAddress" class="btn mb-5 btn-sm btn-success">Add
-                        Address</a>
-                    </div>
-                  </div>
-
-                    </div>
-
-                  </div>
-
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="padding"></div>
-      <div class="padding"></div>
-</section>
-</div>
-<style>
 body {
-    background: #fff;
+    background: #F4F7FD;
 
 }
 
@@ -120,10 +9,10 @@ body {
 
 .card {
     border: 0;
-    box-shadow: 0px 0px 10px 0px grey;
-    -webkit-box-shadow: 0px 0px 10px 0px grey;
-    -moz-box-shadow: 0px 0px 10px 0px grey
-    -ms-box-shadow: 0px 0px 10px 0px rgba(85, 63, 105, 0.1);
+    box-shadow: 0px 0px 10px 0px rgba(82, 63, 105, 0.1);
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(82, 63, 105, 0.1);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(82, 63, 105, 0.1);
+    -ms-box-shadow: 0px 0px 10px 0px rgba(82, 63, 105, 0.1);
 }
 
 .card {
@@ -132,9 +21,9 @@ body {
     flex-direction: column;
     min-width: 0;
     word-wrap: break-word;
-    background-color: #f0ebeb;
+    background-color: #ffffff;
     background-clip: border-box;
-    border: 1px solid #0f0f0f;
+    border: 1px solid #e6e4e9;
     border-radius: 8px;
 }
 
@@ -165,21 +54,21 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background-color: #e1d9d9;
+    background-color: #edf1fc;
     width: 4rem;
     height: 4rem;
     border-radius: 50%;
 }
 
 .widget-49 .widget-49-title-wrapper .widget-49-date-primary .widget-49-date-day {
-    color: #dfb2ad;
+    color: #4e73e5;
     font-weight: 500;
     font-size: 1.5rem;
     line-height: 1;
 }
 
 .widget-49 .widget-49-title-wrapper .widget-49-date-primary .widget-49-date-month {
-    color: #dbbaa6;
+    color: #4e73e5;
     line-height: 1;
     font-size: 1rem;
     text-transform: uppercase;
@@ -423,5 +312,3 @@ body {
 .widget-49 .widget-49-meeting-action a {
     text-transform: uppercase;
 }
-
-</style>

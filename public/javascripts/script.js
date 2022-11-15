@@ -12,3 +12,13 @@
       }
     })
   }
+
+  function addToWishlist(proId){
+    $.ajax({
+      url:'/addToWishlist/'+proId,
+      method:'get',
+      success:(response)=>{
+        location.reload()
+      }
+    })
+  }

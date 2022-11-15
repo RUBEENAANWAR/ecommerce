@@ -1,3 +1,4 @@
+ <div class="container">
  <div class="row">
  {{#each boy}}
       <div class="col-md-3">
@@ -6,9 +7,12 @@
   <div class="card-body">
     <h5 class="card-title">{{this.Name}}</h5>
     <p class="card-text">{{this.Description}}</p>
-    <a href="/add-to-cart/{{this._id}}" class="btn btn-primary">ADD TO CART</a>
+    <button onclick="addToCart('{{this._id}}')" href="/add-to-cart/{{this._id}}" class="btn btn-primary">ADD TO CART</button>
+    
+
   </div>
  </div>
  </div>
  {{/each}}
+ </div>
  </div>

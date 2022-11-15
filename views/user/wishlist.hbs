@@ -1,0 +1,87 @@
+<section>
+    <div class="container mt-5">
+        <h3><b>Wishlist</b></h3>
+        <table class="table mt-5" id="productsTable">
+            <thead>
+                <tr>
+
+                    <th scope="col">Item</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Price</th>
+                    
+                    <th scope="col">Options</th>
+                    <th scope="col">Add</th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                {{#each products}}
+                <tr>
+                    <td><img style="width:70px;height:70px" src="/product-images/{{this.product._id}}.jpg" alt=""></td>
+                    <td>{{this.product.Name}}</td>
+                    <td>Rs.{{this.product.Price}}</td>
+
+                    <td>
+                        <button  class="cart-item-count ml-3 btn btn-outline-danger" onclick="removeWishlistProduct('{{this._id}}','{{this.product._id}}')" >Remove</button> 
+                    </td>
+
+                      <td>
+                <button onclick="addToCart('{{this._id}}')"class="btn btn-outline-dark" data-toggle="modal"data-target="#success_tic">Add to cart</button>
+    <div id="success_tic" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <a class="close" href="#" data-dismiss="modal">&times;</a>
+      <div class="page-body">
+    <div class="head">  
+      <h3 style="margin-top:5px;">Item added to cart successfully</h3>
+      
+    </div>
+
+  <h1 style="text-align:center;"><div class="checkmark-circle">
+  <div class="background"></div>
+  <div class="checkmark draw"></div>
+</div><h1>
+
+  </div>
+</div>
+
+</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+<hr>
+<div class="float-right pr-5">
+{{!-- <a href="/place-order" class=" btn btn-success mt-3" style="width=100% "><b><i>Place Order</i></b></a> --}}
+</div>
+    </div>
+</section>
+<script>
+function removeWishlistProduct(wishlistId,proId){
+       $.ajax({
+        url:'/removeWishlistProduct',
+        data:{
+                wishlist:wishlistId,
+                product:proId
+            },
+            method:'post',
+             success:(response)=>{
+                if(response.removeProduct){
+                    alert("Are you sure to remove the product from your wishlist ?")
+                    location.reload()
+                }
+            }
+       }) 
+
+    }
+</script>
+
+<script>
+  $(function(){
+    $('#productsTable').DataTable()
+  })
+
+</script>

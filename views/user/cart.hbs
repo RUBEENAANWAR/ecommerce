@@ -41,12 +41,6 @@
 </section>
 
 <script>
-$(document).ready( function () {
-    $('#productsTable').DataTable();
-} );
-</script>
-
-<script>
     function changeQuantity(cartId,proId,userId,count){
         let quantity=parseInt(document.getElementById(proId).innerHTML)
         count=parseInt(count)
@@ -91,4 +85,10 @@ $(document).ready( function () {
        }) 
 
     }
+</script>
+
+<script>
+$(document).ready( function () {
+    $('#productsTable').DataTable();
+} );
 </script>

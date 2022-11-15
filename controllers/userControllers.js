@@ -124,6 +124,19 @@ userHome=async (req, res, next) => {
       res.json({ status: true });
     });
   }
+
+  // const userWishlist=(req,res)=>{
+  //   let products=userHelpers.getWishlistProducts(req.session.user._id)
+  //   res.render("user/wishlist",{products,user:req.session.user._id})
+  // }
+  // const addToWishlist=(req, res) => {
+  //   console.log("wishlist call");
+  //   userHelpers.addToWishlist(req.params.id, req.session.user._id).then(() => {
+  //     // res.json({ status: true });
+  //     res.redirect('/')
+  //   });
+  // }
+
   const categoryBoy=async (req, res) => {
     let boy = await db
       .get()
@@ -132,6 +145,7 @@ userHome=async (req, res, next) => {
       .toArray();
     res.render("user/categoryBoy", { boy });
   };
+
   const categoryGirl=async (req, res) => {
     let girl = await db
       .get()
@@ -163,7 +177,9 @@ userHome=async (req, res, next) => {
     let products = await userHelpers.getCartProductList(req.body.userId);
     console.log(products+1234);
     let totalPrice = await userHelpers.getTotalAmount(req.body.userId);
-    userHelpers.placeOrder(req.body, products, totalPrice).then((orderId) => {
+    const address= await userHelpers.getAddress(req.session.user._id)
+
+    userHelpers.placeOrder(req.body, products, totalPrice,address).then((orderId) => {
       if(req.body['payment-method']==='COD'){
         res.json({ codSuccess: true });
       }else{
@@ -227,6 +243,8 @@ userHome=async (req, res, next) => {
     })
   }
 
+
+
   module.exports={
     userHome,
     userLogin,
@@ -248,6 +266,7 @@ userHome=async (req, res, next) => {
     placeOrderPost,
     orderSuccess,
     viewOrderProducts,
-    verifyPaymentPost
+    verifyPaymentPost,
+    // userWishlist,addToWishlist
 
   }

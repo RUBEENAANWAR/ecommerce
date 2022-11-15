@@ -368,23 +368,147 @@ module.exports = {
       resolve(total[0]?.total);
     });
   },
-  placeOrder: (order, products, total) => {
+  getWishlistProducts:(userId)=>{
+    return new Promise(async(resolve,reject)=>{
+     let wishlistItems = await db
+     .get()
+     .collection(collection.WISHLIST_COLLECTION)
+     .aggregate([
+       {
+         $match: { user: ObjectId(userId) },
+       },
+       {
+         $unwind: "$products",
+       },
+       {
+         $project: {
+           item: "$products.item"
+          
+         },
+       },
+       {
+         $lookup: {
+           from: collection.PRODUCT_COLLECTION,
+           localField: "item",
+           foreignField: "_id",
+           as: "product",
+         },
+       },
+       {
+         $project: {
+           item: 1,
+           quantity: 1,
+           product: { $arrayElemAt: ["$product", 0] },
+         },
+       },
+     ])
+     .toArray();
+     console.log(wishlistItems);
+
+     resolve(wishlistItems)
+
+    })
+ },
+ addToWishlist: (proId, userId) => {
+   // console.log('fghgbhhjku');
+   let proObj = {
+     item: ObjectId(proId),
+    
+   };
+   return new Promise(async (resolve, reject) => {
+     let userWishlist = await db
+       .get()
+       .collection(collection.WISHLIST_COLLECTION)
+       .findOne({ user: ObjectId(userId) });
+       console.log(userWishlist);
+     if (userWishlist) {
+       let proExist = userWishlist.products.findIndex(
+         (product) => product.item == proId
+       );
+       console.log(proExist);
+         db.get()
+           .collection(collection.WISHLIST_COLLECTION)
+           .updateOne(
+             { user: ObjectId(userId) },
+             {
+               $push: { products: proObj },
+             }
+           )
+           .then((response) => {
+             resolve();
+           });
+   
+     } else {
+       let wishlistObj = {
+         user: ObjectId(userId),
+         products: [proObj],
+       };
+       db.get()
+         .collection(collection.WISHLIST_COLLECTION)
+         .insertOne(wishlistObj)
+         .then((response) => {
+           resolve();
+         });
+     }
+   });
+ },
+
+ removeWishlistProduct: (details) => {
+  console.log(details);
+  return new Promise((resolve, reject) => {
+    db.get()
+      .collection(collections.WISHLIST_COLLECTION)
+      .updateOne(
+        { _id: ObjectId(details.wishlist) },
+        {
+          $pull: { products: { item: ObjectId(details.product) } },
+        }
+      )
+      .then((response) => {
+        resolve({ removeProduct: true });
+      });
+  });
+},
+
+  // getWishlistCount: (userId) => {
+  //   return new Promise(async (resolve, reject) => {
+  //     let count = 0;
+  //     let wishlist = await db
+  //       .get()
+  //       .collection(collections.WISHLIST_COLLECTION)
+  //       .findOne({ user: ObjectId(userId) });
+  //     if (wishlist) {
+  //       count = wishlist.products.length;
+  //     }
+  //     resolve(count);
+  //   });
+  // },
+
+  placeOrder: (order, products, total,address) => {
     return new Promise((resolve, reject) => {
-      console.log(order, products, total)
-      let status = order['payment-method'] === 'COD' ? 'placed' : 'pending'
+      let d=new Date().toString()
+      let index=d.lastIndexOf(":")+3
+      let date=(d.substring(0,index))
+      
+      console.log(order, products, total, address);
+      let status = order["payment-method"] === "COD" ? "placed" : "pending";
       let orderObj = {
         deliveryDetails: {
           name: order.name,
-          address: order.address,
+          mobile: order.mobile,
+          flat: order.flat,
+          area: order.area,
           pincode: order.pincode,
-          mobile: order.mobile
+          landmark: order.landmark,
+          city: order.city,
+          state: order.state,
         },
         userId: ObjectId(order.userId),
-        paymentMethod: order['payment-method'],
+        paymentMethod: order["payment-method"],
         products: products,
         totalAmount: total,
         status: status,
-        date: new Date()
+        date: date,
       }
       db.get().collection(collections.ORDER_COLLECTION).insertOne(orderObj).then((response) => {
         db.get().collection(collections.CART_COLLECTION).deleteOne({ user: ObjectId(order.userId) })
@@ -563,6 +687,23 @@ module.exports = {
           Mobilenumber:data.Mobilenumber
         }
       }).then((response)=>{
+        resolve()
+      }).catch((error)=>{
+        reject(error)
+      })
+    })
+  },
+  returnOrder:(orderId,reason)=>{
+    return new Promise((resolve,reject)=>{
+     let status='Waiting for approval'
+      db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:ObjectId(orderId)
+      },
+      {
+        $set:{
+          status:'Waiting for approval',
+          returnButton:false
+        }
+      }).then(()=>{
         resolve()
       }).catch((error)=>{
         reject(error)
