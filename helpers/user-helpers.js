@@ -431,7 +431,7 @@ module.exports = {
            .updateOne(
              { user: ObjectId(userId) },
              {
-               $push: { products: proObj },
+               $addToSet: { products: proObj },
              }
            )
            .then((response) => {
@@ -489,6 +489,34 @@ module.exports = {
       let d=new Date().toString()
       let index=d.lastIndexOf(":")+3
       let date=(d.substring(0,index))
+      let month=new Date().getMonth()
+      switch (month) {
+        case 0: month = "Jan"
+            break;
+        case 1: month = "Feb"
+            break;
+        case 2: month = "Mar"
+            break;
+        case 3: month = "Apr"
+            break;
+        case 4: month = "May"
+            break;
+        case 5: month = "Jun"
+            break;
+        case 6: month = "Jul"
+            break;
+        case 7: month = "Aug"
+            break;
+        case 8: month = "Sep"
+            break;
+        case 9: month = "Oct"
+            break;
+        case 10: month = "Nov"
+            break;
+        case 11: month = "Dec"
+            break;
+        default: "someting wrong"
+    }
       
       console.log(order, products, total, address);
       let status = order["payment-method"] === "COD" ? "placed" : "pending";
@@ -509,6 +537,8 @@ module.exports = {
         totalAmount: total,
         status: status,
         date: date,
+        month:month
+    
       }
       db.get().collection(collections.ORDER_COLLECTION).insertOne(orderObj).then((response) => {
         db.get().collection(collections.CART_COLLECTION).deleteOne({ user: ObjectId(order.userId) })
@@ -695,12 +725,12 @@ module.exports = {
   },
   returnOrder:(orderId,reason)=>{
     return new Promise((resolve,reject)=>{
-     let status='Waiting for approval'
+     let status='Returned'
       db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:ObjectId(orderId)
       },
       {
         $set:{
-          status:'Waiting for approval',
+          status:status,
           returnButton:false
         }
       }).then(()=>{

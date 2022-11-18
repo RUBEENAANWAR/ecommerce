@@ -1,3 +1,5 @@
+ <script src="https://kit.fontawesome.com/98c7006d3c.js" crossorigin="anonymous"></script>
+ 
  <header>
   <nav style="background-color:#7e658a" class="navbar navbar-expand-lg">
   <div class="container-fluid">
@@ -7,8 +9,11 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
           {{#if adminData}}
+         <li class="nav-item">
+          <a class="nav-link active" style="color: #ffffff;" aria-current="page" href="/admin/dashboard">DASHBOARD</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link active" style="color: #ffffff;" aria-current="page" href="/admin">ALL PRODUCTS</a>
         </li>
         <li class="nav-item">
@@ -20,6 +25,20 @@
          <li class="nav-item">
           <a class="nav-link" style="color: #ffffff;" href="/admin/category-management">CATEGORY</a>
         </li>
+        <div class="dropdown ">
+  <button class="btn  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color:#7e658a  ; color:#fff">
+ <i class="fa-solid fa-bars" style="color: #fff;"></i>
+  </button>
+    {{#if adminData}}
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+   
+    <a class="dropdown-item" href="/admin/salesReport"><b>Sales Report</b></a>
+    
+    <a class="dropdown-item" href="/admin/coupon"><b>Coupon</b></a>
+  </div>
+     {{/if}}
+</div>
+    
         {{/if}}
         
       </ul>

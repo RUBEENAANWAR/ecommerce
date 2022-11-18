@@ -121,6 +121,7 @@ const adminLogout = (req, res) => {
   res.redirect("/admin/login");
 };
 const categoryManagement = (req, res) => {
+  adminData=req.session.admin
   adminHelpers.getCategory().then((category) => {
     console.log(category);
     res.render("admin/adminCategoryManagement", { admin: true, category });

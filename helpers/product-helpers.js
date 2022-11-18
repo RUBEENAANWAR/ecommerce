@@ -6,6 +6,10 @@ const ObjectId = require("mongodb").ObjectID;
 module.exports = {
   addProduct: (product, callback) => {
     // console.log(product)
+
+    product.stock=parseInt(product.stock)
+    product.Price=parseInt(product.Price)
+
     db.get()
       .collection("product")
       .insertOne(product)
@@ -45,6 +49,10 @@ module.exports = {
   },
   updateProduct: (proId, proDetails) => {
     return new Promise((resolve, reject) => {
+
+      proDetails.stock=parseInt(proDetails.stock)
+      proDetails.Price=prseInt(proDetails.Price)
+      
       db.get()
         .collection(collection.PRODUCT_COLLECTION)
         .updateOne(
@@ -55,6 +63,7 @@ module.exports = {
               Name: proDetails.Name,
               Description: proDetails.Description,
               Price: proDetails.Price,
+              stock:proDetails.stock,
               Category: proDetails.Category,
             },
           }

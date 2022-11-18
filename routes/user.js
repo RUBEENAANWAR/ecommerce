@@ -9,6 +9,7 @@ const { Db } = require("mongodb");
 const db = require("../config/connection");
 const collections = require("../config/collections");
 const userControllers = require("../controllers/userControllers");
+const excelJs = require("exceljs");
 const verifyLogin = (req, res, next) => {
   if (req.session && req.session.user && req.session.user.loggedIn) {
     next();
@@ -80,7 +81,7 @@ router.post(
   userControllers.changeProductQuantity
 );
 
-router.post("/remove-cart-product", userControllers.removeCartProduct);
+router.get("/remove-cart-product/:id", userControllers.removeCartProduct);
 
 router.get("/place-order", verifyLogin, userControllers.placeOrderGet);
 
@@ -130,6 +131,9 @@ router.get("/orders", verifyLogin, async (req, res) => {
     } else if (order.status == "Cancelled") {
       order.cancelButton = false;
       order.returnButton = false;
+    }else if(order.status=="returned") {
+      order.cancelButton=false
+      order.returnButton=false
     } else {
       order.cancelButton = true;
       order.returnButton = false;
@@ -227,6 +231,15 @@ router.get("/wishlist",verifyLogin,async(req,res)=>{
     userHelpers.removeWishlistProduct(req.body).then((response)=>{
       res.json(response)
     })
+  })
+
+  router.get('/error',(req,res)=>{
+    res.render('./error')
+
+  })
+
+  router.get('/userCoupon',(req,res)=>{
+    res.render('user/userCoupon')
   })
 
 module.exports = router;

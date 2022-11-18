@@ -1,22 +1,23 @@
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+<script src="https://kit.fontawesome.com/98c7006d3c.js" crossorigin="anonymous"></script>
 
 <div class="container mt-5 mb-5">
     
-	<div class="card">
+	<div class="card " style="border:rgb(85, 82, 82) ;">
 
 
 		<div class="row g-0">
 			<div class="col-md-6 border-end">
         
-        
-       
+        <div id="main_product_image">
+       {{!-- hiiihiufhdsuigbi --}}
 				<div class="d-flex flex-column justify-content-center">
-         
-					<div class="main_image"> <img src="/product-images/{{this.product._id}}.jpg" data-imagezoom="true"
-							id="main_product_image" width="280" height="320"> </div>
-					<div class="thumbnail_images">
-						
-					</div>
+           <div id="img-container">
+                        <div id="lens"></div>
+                        <img id="featured" src="/product-images/{{this.product._id}}.jpg" class='img-fluid'>
+            </div>
+            </div>
 				</div>
 			</div>
       
@@ -45,6 +46,7 @@
 					<div class="buttons d-flex flex-row mt-5 gap-3">
 						<form action="/addToWishlist" method="post">
 							<input type="hidden" name="id" value=" product._id ">
+                            
 						 <button class="btn btn-outline-danger">Add to Wishlist 🤍 </button>
 						</form> 
 						{{!-- <form action="/add-to-cart/{{this.product}}" method="post">
@@ -70,11 +72,9 @@
 
 </div>
 
-
-
 <style>
     body {
-    background-color: #ecedee
+    background-color: #e4d6d5
 }
 
 .card {
@@ -157,19 +157,19 @@
 }
 
 .colors ul li:nth-child(2) {
-    background-color: #96918b
+    background-color: #c0bcb7
 }
 
 .colors ul li:nth-child(3) {
-    background-color: #68778e
+    background-color: #acb5c3
 }
 
 .colors ul li:nth-child(4) {
-    background-color: #263f55
+    background-color: #909fad
 }
 
 .colors ul li:nth-child(5) {
-    background-color: black
+    background-color: rgb(170, 166, 166)
 }
 
 .right-side {
@@ -261,7 +261,7 @@
 /* User Profile */
 
 body {
-    background-color: #f9f9fa
+    background-color: #e1c2c1
 }
 
 .padding {
@@ -294,7 +294,7 @@ body {
 
 .bg-c-lite-green {
         background: --webkit-gradient(linear, left top, right top, from(#d48761), to(#837f7f));
-    background: linear-gradient(to right, #5f5c5c, #f29263);
+    background: linear-gradient(to right, #aba6a6, #f29263);
 }
 
 .user-profile {
@@ -398,12 +398,12 @@ p {
 
 /* Edit Profile */
 body {
-    background: #918282;
+    background: #c8bfbf;
   }
   
   .form-control:focus {
     box-shadow: none;
-    border-color: #BA68C8;
+    border-color: #c6a5cc;
   }
   
   .profile-button {
@@ -430,140 +430,202 @@ body {
     color: #682773;
     cursor: pointer;
   }
-</style>
 
+  
+
+
+
+   .thumbnail {
+        object-fit: cover;
+        max-width: 180px;
+        max-height: 100px;
+        cursor: pointer;
+        opacity: 0.5;
+        margin: 5px;
+        border: 2px solid black;
+
+    }
+
+    .thumbnail:hover {
+        opacity: 1;
+    }
+
+    .active {
+        opacity: 1;
+    }
+
+    #slide-wrapper {
+        margin-top: 30px;
+        max-width: 500px;
+        display: flex;
+        min-height: 100px;
+        align-items: center;
+    }
+
+    #slider {
+        width: 440px;
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+
+    }
+
+    #slider::-webkit-scrollbar {
+        width: 8px;
+
+    }
+
+    #slider::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+
+    }
+
+    #slider::-webkit-scrollbar-thumb {
+        background-color: #dede2e;
+        outline: 1px solid slategrey;
+        border-radius: 100px;
+
+    }
+
+    #slider::-webkit-scrollbar-thumb:hover {
+        background-color: #18b5ce;
+    }
+
+    .arrow {
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        transition: .3s;
+    }
+
+    .arrow:hover {
+        opacity: .5;
+        width: 35px;
+        height: 35px;
+    }
+
+    #img-container {
+        z-index: 1;
+        max-width: 500px;
+        position: relative;
+    }
+
+    #lens {
+        z-index: 2;
+        position: absolute;
+
+        height: 125px;
+        width: 125px;
+
+        background-repeat: no-repeat;
+        cursor: none;
+
+    }
+    .container{
+      border-radius:10px ;
+    }
+</style>
 <script>
-    function changeImage(element) {
+  function changeImage(element) {
 
     const main_prodcut_image = document.getElementById('main_product_image');
     main_prodcut_image.src = element.src;
-    
-}
+
+  }
 </script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-<script src="https://kit.fontawesome.com/98c7006d3c.js" crossorigin="anonymous"></script>
+
+
 
 <script>
-    /**
- * ImageZoom Plugin
- * http://0401morita.github.io/imagezoom-plugin
- * MIT licensed
- *
- * Copyright (C) 2014 http://0401morita.github.io/imagezoom-plugin A project by Yosuke Morita
- */
- (function($){
-    var defaults = {
-      cursorcolor:'255,255,255',
-      opacity:0.5,
-      cursor:'crosshair',
-      zindex:2147483647,
-      zoomviewsize:[480,395],
-      zoomviewposition:'right',
-      zoomviewmargin:10,
-      zoomviewborder:'none',
-      magnification:1.925
-    };
-  
-    var imagezoomCursor,imagezoomView,settings,imageWidth,imageHeight,offset;
-    var methods = {
-      init : function(options){
-        $this = $(this),
-        imagezoomCursor = $('.imagezoom-cursor'),
-        imagezoomView = $('.imagezoom-view'),
-        $(document).on('mouseenter',$this.selector,function(e){
-          var data = $(this).data();
-          settings = $.extend({},defaults,options,data),
-          offset = $(this).offset(),
-          imageWidth = $(this).width(),
-          imageHeight = $(this).height(),
-          cursorSize = [(settings.zoomviewsize[0]/settings.magnification),(settings.zoomviewsize[1]/settings.magnification)];
-          if(data.imagezoom == true){
-            imageSrc = $(this).attr('src');
-          }else{
-            imageSrc = $(this).get(0).getAttribute('data-imagezoom');
-          }
-  
-          var posX = e.pageX,posY = e.pageY,zoomViewPositionX;
-          $('body').prepend('<div class="imagezoom-cursor">&nbsp;</div><div class="imagezoom-view"><img src="'+imageSrc+'"></div>');
-  
-          if(settings.zoomviewposition == 'right'){
-            zoomViewPositionX = (offset.left+imageWidth+settings.zoomviewmargin);
-          }else{
-            zoomViewPositionX = (offset.left-imageWidth-settings.zoomviewmargin);
-          }
-  
-          $(imagezoomView.selector).css({
-            'position':'absolute',
-            'left': zoomViewPositionX,
-            'top': offset.top,
-            'width': cursorSize[0]*settings.magnification,
-            'height': cursorSize[1]*settings.magnification,
-            'background':'#000',
-            'z-index':2147483647,
-            'overflow':'hidden',
-            'border': settings.zoomviewborder
-          });
-  
-          $(imagezoomView.selector).children('img').css({
-            'position':'absolute',
-            'width': imageWidth*settings.magnification,
-            'height': imageHeight*settings.magnification,
-          });
-  
-          $(imagezoomCursor.selector).css({
-            'position':'absolute',
-            'width':cursorSize[0],
-            'height':cursorSize[1],
-            'background-color':'rgb('+settings.cursorcolor+')',
-            'z-index':settings.zindex,
-            'opacity':settings.opacity,
-            'cursor':settings.cursor
-          });
-          $(imagezoomCursor.selector).css({'top':posY-(cursorSize[1]/2),'left':posX});
-          $(document).on('mousemove',document.body,methods.cursorPos);
-        });
-      },
-      cursorPos:function(e){
-        var posX = e.pageX,posY = e.pageY;
-        if(posY < offset.top || posX < offset.left || posY > (offset.top+imageHeight) || posX > (offset.left+imageWidth)){
-          $(imagezoomCursor.selector).remove();
-          $(imagezoomView.selector).remove();
-          return;
-        }
-  
-        if(posX-(cursorSize[0]/2) < offset.left){
-          posX = offset.left+(cursorSize[0]/2);
-        }else if(posX+(cursorSize[0]/2) > offset.left+imageWidth){
-          posX = (offset.left+imageWidth)-(cursorSize[0]/2);
-        }
-  
-        if(posY-(cursorSize[1]/2) < offset.top){
-          posY = offset.top+(cursorSize[1]/2);
-        }else if(posY+(cursorSize[1]/2) > offset.top+imageHeight){
-          posY = (offset.top+imageHeight)-(cursorSize[1]/2);
-        }
-  
-        $(imagezoomCursor.selector).css({'top':posY-(cursorSize[1]/2),'left':posX-(cursorSize[0]/2)});
-        $(imagezoomView.selector).children('img').css({'top':((offset.top-posY)+(cursorSize[1]/2))*settings.magnification,'left':((offset.left-posX)+(cursorSize[0]/2))*settings.magnification});
-  
-        $(imagezoomCursor.selector).mouseleave(function(){
-          $(this).remove();
-        });
-      }
-    };
-  
-    $.fn.imageZoom = function(method){
-      if(methods[method]){
-        return methods[method].apply( this, Array.prototype.slice.call(arguments,1));
-      }else if( typeof method === 'object' || ! method ) {
-        return methods.init.apply(this,arguments);
-      }else{
-        $.error(method);
-      }
-    }
-  
-    $(document).ready(function(){
-      $('[data-imagezoom]').imageZoom();
-    });
-  })(jQuery);
+  document.getElementById('img-container').addEventListener('mouseover', function(){
+    imageZoom('featured')
+    
+})
+
+function imageZoom(imgID){
+	let img = document.getElementById(imgID)
+	let lens = document.getElementById('lens')
+
+	lens.style.backgroundImage = `url( ${img.src} )`
+
+	let ratio = 3
+
+	lens.style.backgroundSize = (img.width * ratio) + 'px ' + (img.height * ratio) + 'px';
+
+	img.addEventListener("mousemove", moveLens)
+	lens.addEventListener("mousemove", moveLens)
+	img.addEventListener("touchmove", moveLens)
+
+	function moveLens(){
+		/*
+        Function sets sets position of lens over image and background image of lens
+        1 - Get cursor position
+        2 - Set top and left position using cursor position - lens width & height / 2
+        3 - Set lens top/left positions based on cursor results
+        4 - Set lens background position & invert
+        5 - Set lens bounds
+    
+        */
+
+        //1
+		let pos = getCursor()
+		//console.log('pos:', pos)
+
+		//2
+		let positionLeft = pos.x - (lens.offsetWidth / 2)
+		let positionTop = pos.y - (lens.offsetHeight / 2)
+
+		//5
+		if(positionLeft < 0 ){
+			positionLeft = 0
+		}
+
+		if(positionTop < 0 ){
+			positionTop = 0
+		}
+
+		if(positionLeft > img.width - lens.offsetWidth /3 ){
+			positionLeft = img.width - lens.offsetWidth /3
+		}
+
+		if(positionTop > img.height - lens.offsetHeight /3 ){
+			positionTop = img.height - lens.offsetHeight /3
+		}
+
+
+		//3
+		lens.style.left = positionLeft + 'px';
+		lens.style.top = positionTop + 'px';
+
+		//4
+		lens.style.backgroundPosition = "-" + (pos.x * ratio) + 'px -' +  (pos.y * ratio) + 'px'
+	}
+
+	function getCursor(){
+		/* Function gets position of mouse in dom and bounds
+         of image to know where mouse is over image when moved
+        
+        1 - set "e" to window events
+        2 - Get bounds of image
+        3 - set x to position of mouse on image using pageX/pageY - bounds.left/bounds.top
+        4- Return x and y coordinates for mouse position on image
+        
+         */
+
+        let e = window.event
+        let bounds = img.getBoundingClientRect()
+
+        //console.log('e:', e)
+        //console.log('bounds:', bounds)
+        let x = e.pageX - bounds.left
+		let y = e.pageY - bounds.top
+		x = x - window.pageXOffset;
+		y = y - window.pageYOffset;
+		
+		return {'x':x, 'y':y}
+	}
+
+}
+
+imageZoom('featured')
 </script>
