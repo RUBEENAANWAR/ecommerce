@@ -1,47 +1,33 @@
-<div class="container-fluid">
-    <div class="row justify-content-around pt-5">
-      
-      {{#each products}}
-      <div class="col-md-3">
-        <div class="card" >
-           <a href="/single-product-view?id={{this._id}}">
-  <img class="card-img-top" src="/product-images/{{this._id}}.jpg" alt="baby dress" ></a>
-         
-  <div class="card-body">
-    <h5 class="card-title">{{this.Name}}</h5></a>
-    <p class="card-text">Rs.{{this.Price}}</p>
-    <p class="card-text">{{this.Description}}</p>
-   <a href="/addToWishlist/{{this._id}}">
-    <button style="margin-left:200px ; border-style:none ;"><i class="fa-solid fa-heart " style="color:rgb(240, 46, 79) ;"></i></button>
-  </a>
-    <button onclick="addToCart('{{this._id}}')" class="btn btn-primary" data-toggle="modal" data-target="#success_tic">Add to cart</button>
-    <div id="success_tic" class="modal fade" role="dialog">
-  <div class="modal-dialog">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <a class="close" href="#" data-dismiss="modal">&times;</a>
-      <div class="page-body">
-    <div class="head">  
-      <h3 style="margin-top:5px;">Item added to cart successfully</h3>
-      
-    </div>
+<script>
+     function razorpayPayment(order){
+    var options = {
+    "key": "rzp_test_IGPhwTArryE2pg", // Enter the Key ID generated from the Dashboard
+    "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "Hips and hops ",
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler": function (response){
+    
 
-  <h1 style="text-align:center;"><div class="checkmark-circle">
-  <div class="background"></div>
-  <div class="checkmark draw"></div>
-</div><h1>
+        verifyPayment(response,order)
+    },
+    "prefill": {
+        "name": "Gaurav Kumar",
+        "email": "gaurav.kumar@example.com",
+        "contact": "9999999999"
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#66251f"
+    }
+};
+var rzp1 = new Razorpay(options);
+ rzp1.open();
 
-  </div>
-</div>
-    </div>
-  </div>
-  </div>
- </div>
- </div>
- {{/each}}
- 
-
-      </div>
-    </div>
-   </section>
+  }
+  </script>

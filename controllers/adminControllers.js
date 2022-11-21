@@ -31,6 +31,20 @@ const addProductGet = async (req, res) => {
   console.log(category);
   res.render("admin/add-product", { category });
 };
+const addBannerPost=(req, res) => {
+  productHelpers.addBanner(req.body, (id) => {
+    let image = req.files.Image;
+    console.log(id);
+    image.mv("./public/banner/" + id + ".jpg", (err, done) => {
+      if (!err) {
+        res.redirect("/admin");
+      } else {
+        console.log(err);
+      }
+    });
+  });
+}
+
 
 const addProductPost = (req, res) => {
   productHelpers.addProduct(req.body, (id) => {
@@ -222,5 +236,6 @@ module.exports = {
   deleteCategory,
   adminOrderManagement,
   adminOrderUp,
-  cancelOrder
+  cancelOrder,
+  addBannerPost
 };

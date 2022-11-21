@@ -2,15 +2,15 @@
    <section>
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
   <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img class="d-block w-100" style="height:50rem ;" src="https://images.ctfassets.net/1nzw6mpfcddc/7Lq3l9JHf4TjCkrTISFTT1/ddcd987ed887f320fc5a00767838326e/unique_boy_names_a_to_z.jpeg" alt="First slide">
-    </div>
-    <div class="carousel-item">
-      <img class="d-block w-100" style="height:50rem ;" src="https://media.istockphoto.com/photos/children-in-a-circle-looking-up-picture-id471040390?k=20&m=471040390&s=170667a&w=0&h=YnEAZ5_cZtFwLQ1HHu8r3hcMDvIfHh_LnSVm8_uiFLY=" alt="Second slide">
-    </div>
-    <div class="carousel-item">
-      <img class="d-block w-100" style="height:50rem ;" src="https://www.lookslikefilm.com/wp-content/uploads/2019/05/tatiana-rose-gauta-smal01-www.tatianarosephotography.jpg" alt="Third slide">
-    </div>
+    {{#each banner}}
+      {{#if this.active}}
+        <div class="carousel-item active">
+      {{else}}
+        <div class="carousel-item">
+      {{/if}}
+        <img class="d-block w-100" style="height:50rem ;" src="/banner/{{this._id}}.jpg" alt="First slide">
+      </div>
+  {{/each}}
   </div>
   <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -21,10 +21,12 @@
     <span class="sr-only">Next</span>
   </a>
 </div>
+</div>
+
+
 <div class="container">
   <div class="container-fluid">
     <div class="row justify-content-around pt-5">
-      
       {{#each products}}
       <div class="col-md-3 mt-3">
         <div class="card" >
@@ -35,10 +37,12 @@
     <h5 class="card-title">{{this.Name}}</h5></a>
     <p class="card-text">Rs.{{this.Price}}</p>
     <p class="card-text">{{this.Description}}</p>
-   <a href="/addToWishlist/{{this._id}}">
-    <button style="margin-left:200px ; border-style:none ;"><i class="fa-solid fa-heart " style="color:rgb(240, 46, 79) ;"></i></button>
-  </a>
-    <button onclick="addToCart('{{this._id}}')" class="btn btn-primary" data-toggle="modal" data-target="#success_tic">Add to cart</button>
+    <div class="d-flex justify-content-between">
+      <button onclick="addToCart('{{this._id}}')" class="btn btn-primary" data-toggle="modal" data-target="#success_tic">Add to cart</button>
+      <a href="/addToWishlist/{{this._id}}">
+        <button class="btn btn-link"><i class="fa-solid fa-heart " style="color:rgb(240, 46, 79) ;"></i></button>
+      </a>
+    </div>
     <div id="success_tic" class="modal fade" role="dialog">
   <div class="modal-dialog">
 

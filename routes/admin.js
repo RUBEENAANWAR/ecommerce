@@ -198,4 +198,36 @@ router.get('/couponDelete/:couponId',verifyAdminLogin,(req,res)=>{
   })
 })
 
+router.get("/add-banner", async (req, res) => {
+  res.render("admin/add-banner");
+});
+router.post("/add-banner", (req, res) => {
+  productHelpers.addBanner(req.body, (id) => {
+    let image = req.files.Image;
+    console.log(id);
+    image.mv("./public/banner/" + id + ".jpg", (err, done) => {
+      if (!err) {
+        res.redirect("/admin/viewBanner");
+      } else {
+        console.log(err);
+      }
+    });
+  });
+});
+
+router.get('/viewBanner',(req,res)=>{
+  adminData=req.session.admin
+  productHelpers.getAllBanner().then((banner)=>{
+    console.log(banner)
+    res.render('admin/viewBanner',{admin:true,banner,adminData})
+  })
+})
+
+router.get("/deleteBanner/:id",(req,res)=>{
+  let BannerId=req.params.id
+  productHelpers.deleteBanner(BannerId).then((response)=>{
+    res.render('/admin/viewBanner')
+  })
+})
+
 module.exports = router;

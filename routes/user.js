@@ -238,8 +238,28 @@ router.get("/wishlist",verifyLogin,async(req,res)=>{
 
   })
 
-  router.get('/userCoupon',(req,res)=>{
-    res.render('user/userCoupon')
+  //coupon
+  router.get('/userCoupon', verifyLogin, async (req, res) => {
+    let user = req.session.user
+    let cartcount = await userHelpers.getCartCount(user._id)
+    let coupon = await userHelpers.getCoupon()
+  
+    res.render('user/userCoupon', {  user, cartcount, coupon })
+  
   })
-
+  
+  
+  router.post('/couponCheck', (req, res) => {
+    let code = req.body.code;
+  
+    userHelpers.checkCoupon(code).then((data) => {
+  
+      let value = data.value
+      res.json({ value })
+    }).catch((err) => {
+  
+      res.json({ err: true })
+    })
+  
+  })
 module.exports = router;

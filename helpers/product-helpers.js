@@ -1,5 +1,6 @@
 const db = require("../config/connection");
 const collection = require("../config/collections");
+const collections = require("../config/collections");
 
 const ObjectId = require("mongodb").ObjectID;
 
@@ -81,5 +82,31 @@ module.exports = {
     
      
     })
+},
+addBanner: (banner, callback) => {
+  db.get()
+    .collection("banner")
+    .insertOne(banner)
+    .then((data) => {
+      callback(data.insertedId);
+    });
+  },
+  getAllBanner: () => {
+    return new Promise(async (resolve, reject) => {
+      let banners = await db
+        .get()
+        .collection(collection.BANNER_COLLECTION)
+        .find()
+        .toArray();
+      resolve(banners);
+    });
+  },
+  deleteBanner:(bannerId)=>{
+    return new Promise((resolve,reject)=>{
+      db.get().collection(collections.BANNER_COLLECTION).deleteOne({_id:ObjectId(bannerId)})
+      .then((response)=>{
+        resolve(bannerId)
+      })
+    })
+  }
 }
-};

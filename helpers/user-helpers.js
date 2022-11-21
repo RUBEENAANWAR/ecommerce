@@ -739,6 +739,22 @@ module.exports = {
         reject(error)
       })
     })
+  },
+  getCoupon:()=>{
+    return new Promise(async(resolve,reject)=>{
+      let coupon=await db.get().collection(collection.COUPON_COLLECTION).find().toArray()
+      resolve(coupon)
+    })
+  },
+  checkCoupon:(code)=>{
+    return new Promise(async(resolve,reject)=>{
+      let coupon=await db.get().collection(collection.COUPON_COLLECTION).findOne({code:code})
+      if(coupon){
+        resolve(coupon)
+      }
+      else{
+        reject()
+      }
+    })
   }
-
 }
