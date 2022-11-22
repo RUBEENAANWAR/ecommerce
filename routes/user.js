@@ -60,12 +60,11 @@ router.post(
 router.post("/login", userControllers.userLoginPost);
 
 router.get("/logout", userControllers.userLogout);
-
 router.get("/otpLoginVerify", userControllers.otpLoginVerifyGet);
 
 router.post("/otpLoginVerify", userControllers.otpLoginVerifyPost);
 
-// router.get("/otpSignupVerify", userControllers.otpSignupVerifyGet);
+router.get("/otpSignupVerify", userControllers.otpSignupVerifyGet);
 
 router.post("/otpSignupVerify", userControllers.otpSignupVerifyPost);
 

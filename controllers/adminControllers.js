@@ -118,17 +118,18 @@ const adminLoginPost = (req, res) => {
   });
 };
 const adminViewUsers = function (req, res) {
+  adminData=req.session.admin
   userHelpers.getAllUsers().then((users) => {
-    res.render("admin/view-users", { admin: true, users });
+    res.render("admin/view-users", { admin: true, users,adminData });
   });
 };
 const adminBlockUser = async (req, res) => {
   userHelpers.blockUser(req.params.id);
-  res.redirect("/admin/view-users");
+  res.redirect("/admin/view-users",{admin:true});
 };
 const adminUnblockUser = async (req, res) => {
   userHelpers.unblockUser(req.params.id);
-  res.redirect("/admin/view-users");
+  res.redirect("/admin/view-users",{admin:true});
 };
 const adminLogout = (req, res) => {
   req.session.admin = null;
@@ -138,11 +139,11 @@ const categoryManagement = (req, res) => {
   adminData=req.session.admin
   adminHelpers.getCategory().then((category) => {
     console.log(category);
-    res.render("admin/adminCategoryManagement", { admin: true, category });
+    res.render("admin/adminCategoryManagement", { admin: true, category,adminData});
   });
 };
 const addNewcategoryGet = (req, res) => {
-  res.render("admin/addNewCategory");
+  res.render("admin/addNewCategory",{admin:true});
 };
 const addNewCategoryPost = (req, res) => {
   adminHelpers.addCategory(req.body, (id) => {

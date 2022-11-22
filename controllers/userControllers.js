@@ -57,7 +57,7 @@ const userSignupPost = (req, res) => {
     userHelpers.doSignup(req.body).then((response) => {
       req.session.user = response;
       req.session.user.loggedIn = true;
-      res.redirect("/otpLoginVerify");
+      res.redirect("/otpSignupVerify");
     });
   }
 };
@@ -80,31 +80,31 @@ const userLogout = (req, res) => {
   res.redirect("/");
 };
 
-const otpLoginVerifyGet = (req, res) => {
+const otpLoginVerifyGet=(req, res) => {
   userHelpers.otpSignupVerifyGet(req, res);
   req.session.user = response;
   req.session.user.loggedIn = true;
   res.render("user/otpLoginVerify");
 };
 
-const otpLoginVerifyPost = (req, res) => {
+const otpLoginVerifyPost=(req, res) => {
   userHelpers.otpSignupVerifyPost(req, res);
   console.log(response);
   req.session.loggedIn = true;
   req.session.user = response;
   res.redirect("/");
-};
-const otpSignupVerifyGet = (req, res) => {
+}
+const otpSignupVerifyGet= (req, res) => {
   userHelpers.otpSignupVerifyGet(req, res);
   res.render("user/otpSignupVerify");
-};
-const otpSignupVerifyPost = (req, res) => {
+}
+const otpSignupVerifyPost=(req, res) => {
   userHelpers.otpSignupVerifyPost(req, res);
   console.log(response);
   req.session.loggedIn = true;
   req.session.user = response;
   res.redirect("/");
-};
+}
 
 const userCart = async (req, res) => {
   let products = await userHelpers.getCartProducts(req.session.user._id);

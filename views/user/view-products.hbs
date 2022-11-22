@@ -8,7 +8,7 @@
       {{else}}
         <div class="carousel-item">
       {{/if}}
-        <img class="d-block w-100" style="height:50rem ;" src="/banner/{{this._id}}.jpg" alt="First slide">
+        <img class="d-block w-100" style="height:80vh; width: 100%; object-fit: fill;" src="/banner/{{this._id}}.jpg" alt="First slide">
       </div>
   {{/each}}
   </div>
@@ -39,9 +39,7 @@
     <p class="card-text">{{this.Description}}</p>
     <div class="d-flex justify-content-between">
       <button onclick="addToCart('{{this._id}}')" class="btn btn-primary" data-toggle="modal" data-target="#success_tic">Add to cart</button>
-  
         <button onclick="addToWishlist('{{this._id}}')" class="btn btn-link"><i class="fa-solid fa-heart " style="color:rgb(240, 46, 79) ;"></i></button>
-    
     </div>
     <div id="success_tic" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -52,9 +50,7 @@
       <div class="page-body">
     <div class="head">  
       <h3 style="margin-top:5px;">Item added to cart successfully</h3>
-      
     </div>
-
   <h1 style="text-align:center;"><div class="checkmark-circle">
   <div class="background"></div>
   <div class="checkmark draw"></div>

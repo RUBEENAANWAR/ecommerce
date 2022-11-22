@@ -51,7 +51,7 @@ module.exports = {
       let response = {};
       let user = await db
         .get()
-        .collection(collection.USER_COLLECTION)
+        .collection(collections.USER_COLLECTION)
         .findOne({ Email: userData.Email });
       if (user && !user.userBlocked) {
         bcrypt.compare(userData.Password, user.Password).then((status) => {
@@ -72,21 +72,21 @@ module.exports = {
     });
   },
   otpSignupVerifyGet: (req, res) => {
+    console.log('in verify otp');
     //session = req.session;
     if (session.userId) {
       res.redirect("/");
-    } else if (session.invalidOTP) {
+    } else if(session.invalidOTP) {
+      console.log('in otp');
       session.invalidOTP = false;
       res.render("user/otpLoginVerify", {
         otpMsg: "Wrong phone number or code",
       });
-    } else {
-      res.render("user/otpLoginVerify");
     }
   },
 
   otpSignupVerifyPost: (req, res) => {
-    if (req.body.otp.length === 6) {
+    if ((req.body.otp).length === 6) {
       client.verify
         .services(process.env.serviceID)
         .verificationChecks.create({
