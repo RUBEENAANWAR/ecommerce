@@ -81,7 +81,7 @@ module.exports = {
         otpMsg: "Wrong phone number or code",
       });
     } else {
-      res.render("user/otpSignupVerify");
+      res.render("user/otpLoginVerify");
     }
   },
 

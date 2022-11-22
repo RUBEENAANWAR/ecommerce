@@ -65,7 +65,7 @@ router.get("/otpLoginVerify", userControllers.otpLoginVerifyGet);
 
 router.post("/otpLoginVerify", userControllers.otpLoginVerifyPost);
 
-router.get("/otpSignupVerify", userControllers.otpSignupVerifyGet);
+// router.get("/otpSignupVerify", userControllers.otpSignupVerifyGet);
 
 router.post("/otpSignupVerify", userControllers.otpSignupVerifyPost);
 
