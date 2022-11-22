@@ -2,15 +2,14 @@ const db = require("../config/connection");
 const collection = require("../config/collections");
 // const collections = require("../config/collections");
 
-
 const ObjectId = require("mongodb").ObjectID;
 
 module.exports = {
   addProduct: (product, callback) => {
     // console.log(product)
 
-    product.stock=parseInt(product.stock)
-    product.Price=parseInt(product.Price)
+    product.stock = parseInt(product.stock);
+    product.Price = parseInt(product.Price);
 
     db.get()
       .collection("product")
@@ -21,18 +20,14 @@ module.exports = {
   },
   getAllProducts: () => {
     return new Promise(async (resolve, reject) => {
-      let products = await db
-        .get()
-        .collection('product')
-        .find()
-        .toArray();
+      let products = await db.get().collection("product").find().toArray();
       resolve(products);
     });
   },
   deleteProduct: (proId) => {
     return new Promise((resolve, reject) => {
       db.get()
-        .collection('product')
+        .collection("product")
         .deleteOne({ _id: ObjectId(proId) })
         .then((response) => {
           resolve(proId);
@@ -42,7 +37,7 @@ module.exports = {
   getProductDetails: (proId) => {
     return new Promise((resolve, reject) => {
       db.get()
-        .collection('product')
+        .collection("product")
         .findOne({ _id: ObjectId(proId) })
         .then((product) => {
           resolve(product);
@@ -51,12 +46,11 @@ module.exports = {
   },
   updateProduct: (proId, proDetails) => {
     return new Promise((resolve, reject) => {
+      proDetails.stock = parseInt(proDetails.stock);
+      proDetails.Price = prseInt(proDetails.Price);
 
-      proDetails.stock=parseInt(proDetails.stock)
-      proDetails.Price=prseInt(proDetails.Price)
-      
       db.get()
-        .collection('product')
+        .collection("product")
         .updateOne(
           { _id: ObjectId(proId) },
           {
@@ -65,7 +59,7 @@ module.exports = {
               Name: proDetails.Name,
               Description: proDetails.Description,
               Price: proDetails.Price,
-              stock:proDetails.stock,
+              stock: proDetails.stock,
               Category: proDetails.Category,
             },
           }
@@ -75,22 +69,23 @@ module.exports = {
         });
     });
   },
-  singleProductView:(proId)=>{
+  singleProductView: (proId) => {
     console.log(proId);
-    return new Promise(async(resolve,reject)=>{
-     const product=await db.get().collection('product').findOne({_id:ObjectId(proId)})
-            resolve(product)
-    
-     
-    })
-},
-addBanner: (banner, callback) => {
-  db.get()
-    .collection("banner")
-    .insertOne(banner)
-    .then((data) => {
-      callback(data.insertedId);
+    return new Promise(async (resolve, reject) => {
+      const product = await db
+        .get()
+        .collection("product")
+        .findOne({ _id: ObjectId(proId) });
+      resolve(product);
     });
+  },
+  addBanner: (banner, callback) => {
+    db.get()
+      .collection("banner")
+      .insertOne(banner)
+      .then((data) => {
+        callback(data.insertedId);
+      });
   },
   getAllBanner: () => {
     return new Promise(async (resolve, reject) => {
@@ -102,12 +97,14 @@ addBanner: (banner, callback) => {
       resolve(banners);
     });
   },
-  deleteBanner:(bannerId)=>{
-    return new Promise((resolve,reject)=>{
-      db.get().collection(collection.BANNER_COLLECTION).deleteOne({_id:ObjectId(bannerId)})
-      .then((response)=>{
-        resolve(bannerId)
-      })
-    })
-  }
-}
+  deleteBanner: (bannerId) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.BANNER_COLLECTION)
+        .deleteOne({ _id: ObjectId(bannerId) })
+        .then((response) => {
+          resolve(bannerId);
+        });
+    });
+  },
+};
