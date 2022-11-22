@@ -80,12 +80,12 @@ const userLogout = (req, res) => {
   res.redirect("/");
 };
 
-// const otpLoginVerifyGet = (req, res) => {
-//   userHelpers.otpSignupVerifyGet(req, res);
-//   req.session.user = response;
-//   req.session.user.loggedIn = true;
-//   res.render("user/otpLoginVerify");
-// };
+const otpLoginVerifyGet = (req, res) => {
+  userHelpers.otpSignupVerifyGet(req, res);
+  req.session.user = response;
+  req.session.user.loggedIn = true;
+  res.render("user/otpLoginVerify");
+};
 
 const otpLoginVerifyPost = (req, res) => {
   userHelpers.otpSignupVerifyPost(req, res);
@@ -257,6 +257,7 @@ module.exports = {
   userSignupPost,
   userLoginPost,
   userLogout,
+  otpLoginVerifyGet,
   otpLoginVerifyPost,
   otpSignupVerifyGet,
   otpSignupVerifyPost,
