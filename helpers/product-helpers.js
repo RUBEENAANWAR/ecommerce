@@ -31,7 +31,7 @@ module.exports = {
   deleteProduct: (proId) => {
     return new Promise((resolve, reject) => {
       db.get()
-        .collection(collection.PRODUCT_COLLECTION)
+        .collection('product')
         .deleteOne({ _id: ObjectId(proId) })
         .then((response) => {
           resolve(proId);
@@ -41,7 +41,7 @@ module.exports = {
   getProductDetails: (proId) => {
     return new Promise((resolve, reject) => {
       db.get()
-        .collection(collection.PRODUCT_COLLECTION)
+        .collection('product')
         .findOne({ _id: ObjectId(proId) })
         .then((product) => {
           resolve(product);
@@ -55,7 +55,7 @@ module.exports = {
       proDetails.Price=prseInt(proDetails.Price)
       
       db.get()
-        .collection(collection.PRODUCT_COLLECTION)
+        .collection('product')
         .updateOne(
           { _id: ObjectId(proId) },
           {
@@ -77,7 +77,7 @@ module.exports = {
   singleProductView:(proId)=>{
     console.log(proId);
     return new Promise(async(resolve,reject)=>{
-     const product=await db.get().collection(collection.PRODUCT_COLLECTION).findOne({_id:ObjectId(proId)})
+     const product=await db.get().collection('product').findOne({_id:ObjectId(proId)})
             resolve(product)
     
      
