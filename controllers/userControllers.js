@@ -96,7 +96,7 @@ const otpLoginVerifyPost=(req, res) => {
 }
 const otpSignupVerifyGet= (req, res) => {
   userHelpers.otpSignupVerifyGet(req, res);
-  res.render("user/otpSignupVerify");
+  res.render("user/otpLoginVerify");
 }
 const otpSignupVerifyPost=(req, res) => {
   userHelpers.otpSignupVerifyPost(req, res);
