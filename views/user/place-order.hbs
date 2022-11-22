@@ -257,7 +257,7 @@ var rzp1 = new Razorpay(options);
           let discount = parseInt(total.innerHTML) - response.value
           total.innerHTML = discount
         } else {
-          alert("response")
+          alert("Coupon not found")
           document.getElementById('notfound').style.display = "initial";
         }
       }

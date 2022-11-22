@@ -223,7 +223,7 @@ router.get("/wishlist",verifyLogin,async(req,res)=>{
   
   router.get('/addToWishlist/:id',verifyLogin,(req,res)=>{
     userHelpers.addToWishlist(req.params.id,req.session.user._id).then(()=>{
-      res.redirect("/")
+      res.redirect({status:true})
     })
   })
 
@@ -243,7 +243,6 @@ router.get("/wishlist",verifyLogin,async(req,res)=>{
     let user = req.session.user
     let cartcount = await userHelpers.getCartCount(user._id)
     let coupon = await userHelpers.getCoupon()
-  
     res.render('user/userCoupon', {  user, cartcount, coupon })
   
   })
@@ -251,9 +250,7 @@ router.get("/wishlist",verifyLogin,async(req,res)=>{
   
   router.post('/couponCheck', (req, res) => {
     let code = req.body.code;
-  
     userHelpers.checkCoupon(code).then((data) => {
-  
       let value = data.value
       res.json({ value })
     }).catch((err) => {
