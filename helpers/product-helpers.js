@@ -1,6 +1,6 @@
 const db = require("../config/connection");
 const collection = require("../config/collections");
-const collections = require("../config/collections");
+// const collections = require("../config/collections");
 
 const ObjectId = require("mongodb").ObjectID;
 
@@ -103,7 +103,7 @@ addBanner: (banner, callback) => {
   },
   deleteBanner:(bannerId)=>{
     return new Promise((resolve,reject)=>{
-      db.get().collection(collections.BANNER_COLLECTION).deleteOne({_id:ObjectId(bannerId)})
+      db.get().collection(collection.BANNER_COLLECTION).deleteOne({_id:ObjectId(bannerId)})
       .then((response)=>{
         resolve(bannerId)
       })
