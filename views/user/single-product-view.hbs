@@ -5,13 +5,11 @@
 <div class="container mt-5 mb-5">
     
 	<div class="card " style="border:rgb(85, 82, 82) ;">
-
-
-		<div class="row g-0">
-			<div class="col-md-6 border-end">
+		<div class="row g-0 boxSingleView">
+			<div class="col-md-6 ">
         
         <div id="main_product_image">
-       {{!-- hiiihiufhdsuigbi --}}
+       
 				<div class="d-flex flex-column justify-content-center">
            <div id="img-container">
                         <div id="lens"></div>
@@ -21,48 +19,70 @@
 				</div>
 			</div>
       
-			<div class="col-md-5">
+			<div class="col-md-5 ">
 
-				<div class="p-3 right-side">
-					<div class="d-flex justify-content-between align-items-center">
-						<h3>
-							{{this.product.Name}}
-						</h3> 
+				<div class="p-3 text-align:center">
+					<div class="d-flex justify-content-between ml-5 mt-5">
+						<h2>
+							<b>{{this.product.Name}}</b>
+						</h2> 
 					</div>
-					<div class="description mt-2">
-						<p>
-							{{this.product.category}}
-						</p>
+					<div class="description ml-5 mt-2">
+						<h4>
+							<i>{{this.product.category}}</i>
+						</h4>
 					</div>
-					<h3>Rs.{{this.product.Price}}
+                    	<div class="description ml-5 mt-2">
+						<h5>
+							<i>{{this.product.Description}}</i>
+						</h5>
+					</div>
+					<h3 class="ml-5">Rs.{{this.product.Price}}
 					</h3>
 					<div class="ratings d-flex flex-row align-items-center">
 						<div class="d-flex flex-row"> <i class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i
 								class='bx bxs-star'></i> <i class='bx bxs-star'></i> <i class='bx bx-star'></i> </div>
 					
 					</div>
-          
-					
-					<div class="buttons d-flex flex-row mt-5 gap-3">
-						<form action="/addToWishlist" method="post">
-							<input type="hidden" name="id" value=" product._id ">
-                            
-						 <button class="btn btn-outline-danger">Add to Wishlist 🤍 </button>
-						</form> 
-						{{!-- <form action="/add-to-cart/{{this.product}}" method="post">
-							 <button onclick="addToCart('{{this._id}}')"class="btn btn-outline-dark">Add to cart</button>
-						</form> --}}
-                        
-            <button onclick="addToCart('{{this.product._id}}')" class="btn btn-outline-dark">Add to cart</button>
-          </div>
-					<!-- <div class="search-option"> <i class='bx bx-search-alt-2 first-search'></i>
+        <div class="container align-items-center mt-4">
+            <div class="container align-items-center">
+					<div class="d-flex ">
+      <button onclick="addToCart('{{this._id}}')" class="btn btn-success ml-5" data-toggle="modal" data-target="#success_tic">Add to cart</button>
+     
+        <button onclick="addToWishlist('{{this._id}}')" class="btn btn-danger ml-3">Add to Wishlist</button>
+      
+    </div>
+            </div>
+    <div id="success_tic" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <a class="close" href="#" data-dismiss="modal">&times;</a>
+      <div class="page-body">
+    <div class="head">  
+      <h3 style="margin-top:5px;">Item added to cart successfully</h3>
+      
+    </div>
+
+  <h1 style="text-align:center;"><div class="checkmark-circle">
+  <div class="background"></div>
+  <div class="checkmark draw"></div>
+</div><h1>
+
+  </div>
+</div>
+    </div>
+  </div>
+  </div>			
+			<!-- <div class="search-option"> <i class='bx bx-search-alt-2 first-search'></i>
 						<div class="inputs"> <input type="text" name=""> </div> <i class='bx bx-share-alt share'></i> -->
 				</div>
 			</div>
-      <div class="col-md-1 d-flex flex-row-reverse" >
+      {{!-- <div class="col-md-1 d-flex flex-row-reverse" >
         <a href="/" style="text-decoration:none; color:#000;">
         <span class="heart"><i class='fa-sharp fa-solid fa-xmark' ></i></span></a>
-      </div>
+      </div> --}}
       
 		</div>
     
@@ -72,7 +92,97 @@
 
 </div>
 
+<script>
+  $(function() {
+  $(".HeartAnimation").click(function() {
+    $(this).toggleClass("animate");
+  });
+});
+</script>
+
 <style>
+
+     body{
+  background-color: #e6e6e6;
+  width: 100%;
+  height: 100%;
+}
+ #success_tic .page-body{
+  max-width:300px;
+  background-color:#FFFFFF;
+  margin:10% auto;
+}
+ #success_tic .page-body .head{
+  text-align:center;
+}
+/* #success_tic .tic{
+  font-size:186px;
+} */
+#success_tic .close{
+      opacity: 1;
+    position: absolute;
+    right: 0px;
+    font-size: 30px;
+    padding: 3px 15px;
+  margin-bottom: 10px;
+}
+#success_tic .checkmark-circle {
+  width: 150px;
+  height: 150px;
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+}
+.checkmark-circle .background {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: #12d84a;
+  position: absolute;
+}
+#success_tic .checkmark-circle .checkmark {
+  border-radius: 5px;
+}
+#success_tic .checkmark-circle .checkmark.draw:after {
+  -webkit-animation-delay: 300ms;
+  -moz-animation-delay: 300ms;
+  animation-delay: 300ms;
+  -webkit-animation-duration: 1s;
+  -moz-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-timing-function: ease;
+  -moz-animation-timing-function: ease;
+  animation-timing-function: ease;
+  -webkit-animation-name: checkmark;
+  -moz-animation-name: checkmark;
+  animation-name: checkmark;
+  -webkit-transform: scaleX(-1) rotate(135deg);
+  -moz-transform: scaleX(-1) rotate(135deg);
+  -ms-transform: scaleX(-1) rotate(135deg);
+  -o-transform: scaleX(-1) rotate(135deg);
+  transform: scaleX(-1) rotate(135deg);
+  -webkit-animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
+#success_tic .checkmark-circle .checkmark:after {
+  opacity: 1;
+  height: 75px;
+  width: 37.5px;
+  -webkit-transform-origin: left top;
+  -moz-transform-origin: left top;
+  -ms-transform-origin: left top;
+  -o-transform-origin: left top;
+  transform-origin: left top;
+  border-right: 15px solid #fff;
+  border-top: 15px solid #fff;
+  border-radius: 2.5px !important;
+  content: '';
+  left: 35px;
+  top: 80px;
+  position: absolute;
+}
+
     body {
     background-color: #e4d6d5
 }
@@ -524,6 +634,35 @@ body {
     .container{
       border-radius:10px ;
     }
+
+    .HeartAnimation {
+  padding-top: 2em;
+  background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/66955/web_heart_animation.png');
+	background-repeat: no-repeat;
+	background-size: 2900%;
+  background-position: left;
+	height: 50px;
+	width: 50px;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.animate {
+  animation: heart-burst .8s steps(28) forwards;
+}
+
+@keyframes heart-burst {
+	0% {
+		background-position: left
+	}
+	100% {
+		background-position: right
+	}
+}
+.boxSingleView{
+background: rgb(238,174,202);
+background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+}
 </style>
 <script>
   function changeImage(element) {

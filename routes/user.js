@@ -80,7 +80,7 @@ router.post(
   userControllers.changeProductQuantity
 );
 
-router.get("/remove-cart-product/:id", userControllers.removeCartProduct);
+router.post("/remove-cart-product", userControllers.removeCartProduct);
 
 router.get("/place-order", verifyLogin, userControllers.placeOrderGet);
 

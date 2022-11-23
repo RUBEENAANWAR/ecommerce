@@ -26,7 +26,7 @@
                         <button class="cart-item-count ml-3" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user}}',1)" >+</button>
                     </td>
                     <td>
-                        <button  class="cart-item-count ml-3 btn-danger" onclick="removeCartProduct('{{this._id}}','{{this.product._id}}')" >Remove</button> 
+                        <button  class="cart-item-count ml-3 btn-danger" onclick="removeCartProduct('{{this._id}}','{{this.product._id}}')">Remove</button> 
                     </td>
                 </tr>
                 {{/each}}
@@ -68,12 +68,13 @@
         })
     }
 
-    function removeCartProduct(cartId,proId){
+   function removeCartProduct(cartId,proId){
        $.ajax({
         url:'/remove-cart-product',
         data:{
                 cart:cartId,
-                product:proId
+                product:proId,
+             
             },
             method:'post',
              success:(response)=>{
