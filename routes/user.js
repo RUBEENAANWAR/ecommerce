@@ -97,13 +97,13 @@ router.get(
 );
 
 // router.get("/single-product-view", userControllers.singleProductView);
-router.get("/single-product-view", async (req, res) => {
+router.get("/single-product-view", verifyLogin,async (req, res) => {
   let id = req.query.id;
+  let user=req.session.user
   console.log(id);
   let product = await productHelper.singleProductView(id);
   console.log(product);
-
-  res.render("user/single-product-view", { product });
+  res.render("user/single-product-view", { product,user});
 });
 
 router.get("/cancelOrder/:orderId", verifyLogin, (req, res) => {

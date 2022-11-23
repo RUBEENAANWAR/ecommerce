@@ -28,7 +28,12 @@ module.exports = {
     return new Promise((resolve, reject) => {
       db.get()
         .collection("product")
-        .deleteOne({ _id: ObjectId(proId) })
+        .deleteOne({ _id: ObjectId(proId) },
+        {
+          $set: {
+            userDeleted: false,
+          },
+        })
         .then((response) => {
           resolve(proId);
         });

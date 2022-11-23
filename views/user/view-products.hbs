@@ -1,5 +1,5 @@
 
-   <section>
+   <section class="views mb-5">
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
   <div class="carousel-inner">
     {{#each banner}}
@@ -8,7 +8,7 @@
       {{else}}
         <div class="carousel-item">
       {{/if}}
-        <img class="d-block w-100" style="height:80vh; width: 100%; object-fit: fill;" src="/banner/{{this._id}}.jpg" alt="First slide">
+        <img class="d-block w-100" style="height:auto; width: 100%; object-fit: fill;" src="/banner/{{this._id}}.jpg" alt="First slide">
       </div>
   {{/each}}
   </div>
@@ -385,6 +385,14 @@ body {
 	100% {
 		background-position: right
 	}
+}
+
+@media (min-width: 576px)
+ { 
+ .img d-block
+ }
+  }
+
 }
 </style>
 
